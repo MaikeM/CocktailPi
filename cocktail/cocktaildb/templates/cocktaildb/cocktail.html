@@ -1,0 +1,26 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}
+
+    {{ cocktail }}
+{% if mixstep_list %}
+    <ul>
+    {% for step in mixstep_list %}
+        <li>{{ step }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No steps are available.</p>
+{% endif %}
+</p>
+</p>
+ <li><a href="/cocktaildb/"> Back </a></li>
+{% endblock %}

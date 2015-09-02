@@ -1,0 +1,14 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'cocktaildb/style.css' %}" />
+
+<p>Hello, world. You're at the cocktail index<p>
+{% if cocktail_list %}
+    <ul>
+    {% for cocktail in cocktail_list %}
+        <li><a href="/cocktaildb/{{ cocktail.id }}/">{{ cocktail }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No cocktails are available.</p>
+{% endif %}

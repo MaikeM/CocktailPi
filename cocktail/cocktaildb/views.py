@@ -1,13 +1,21 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Cocktail
+from django.template import RequestContext, loader
+from .models import Cocktail, MixStep
 
 
 def index(request):
-    output = "Hello, world. You're at the cocktail index.\n\n\n"
-    cocktail_list = Cocktail.objects.order_by('name')
-    output += "\n".join([p.name for p in cocktail_list])
-    return HttpResponse(output)
+	cocktail_list = Cocktail.objects.order_by('name')
+	template = loader.get_template('cocktaildb/index.html')
+	context = RequestContext(request, {
+		'cocktail_list': cocktail_list,
+	})
+	return HttpResponse(template.render(context))
 
-def test(request, cocktail_name):
-    return HttpResponse("You're looking at cocktail %s." % cocktail_name)
+def cocktail(request, cocktail_id):
+	try:
+		cocktail = Cocktail.objects.get(pk=cocktail_id)
+		mixstep_list = MixStep.objects.filter(cocktail_id=cocktail)
+	except Cocktail.DoesNotExist:
+		raise Http404("Cocktail does not exist")
+	return render(request, 'cocktaildb/cocktail.html', {'cocktail': cocktail, 'mixstep_list': mixstep_list})
