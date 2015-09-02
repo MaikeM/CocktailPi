@@ -15,13 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from cocktaildb import views
 
-#urlpatterns = [
-#    url(r'^admin/', include(admin.site.urls)),
-#]
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^cocktaildb/', include('cocktaildb.urls'), name='cocktaildb'),
+    url(r'^cocktaildb/', include('cocktaildb.urls')),
     url(r'^admin/', include(admin.site.urls)),
-] 
+    url(r'^$', include('cocktaildb.urls')),
+]
