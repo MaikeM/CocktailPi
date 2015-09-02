@@ -33,7 +33,13 @@ class MixStep(models.Model):
 			text = "Take your {}".format(self.JARS[self.jar][1])
 		elif self.action == 1:
 			if self.jar == None:
-				text = "Add {}ml of {} to your cocktail".format(self.amount,self.ingredient)
+				if self.ingredient.name == "Ice":
+					if self.amount == None:
+						text = "Fill your jar with ice cubes."
+					else:
+						text = "Add {} ice cubes to your cocktail.".format(self.amount)
+				else:
+					text = "Add {}ml of {} to your cocktail".format(self.amount,self.ingredient)
 			else:
 				text = "Fill the content of the shaker into your glass."
 		elif self.action == 2:
