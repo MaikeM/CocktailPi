@@ -64,7 +64,13 @@
                     </font>
                     <br>
                     <br>
-                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{{ cocktail.alc }} Vol %</span>
+                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">
+                    {% if cocktail.nonalcoholic %}
+                    non-alcoholic
+                    {% else %}
+                    {{ cocktail.alc }} Vol %
+                    {% endif %}
+                    </span>
                     <br>
                     <br>
                     <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ cocktail.name }}</span>

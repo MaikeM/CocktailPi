@@ -51,7 +51,11 @@
                     <strong><font color="#111111">Description: </font></strong><font color="#5A5A5A">{{ ingredient.description }}</font>
                     <br>
                     <br>
-                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{{ ingredient.alc }} Vol %</span>
+                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{% if ingredient.nonalcoholic %}
+                    non-alcoholic
+                    {% else %}
+                    {{ ingredient.alc }} Vol %
+                    {% endif %}</span>
                     <br>
                     <br>
                     <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ ingredient.amount }}</span>
