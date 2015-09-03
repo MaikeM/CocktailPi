@@ -7,7 +7,7 @@ class Cocktail(models.Model):
 	nonalcoholic = models.BooleanField(default = False, verbose_name = "non-alcoholic")
 	description = models.TextField(default = "")
 	alc = models.IntegerField(default = 0, verbose_name="alcohol strength in Vol %")
-	
+
 	def __unicode__(self):
 		return self.name
 
@@ -17,6 +17,7 @@ class Ingredient(models.Model):
 	nonalcoholic = models.BooleanField(default = False, verbose_name = "non-alcoholic" )
 	description = models.TextField(default = "")
 	alc = models.IntegerField(default = 0, verbose_name="alcohol strength in Vol %")
+	amount = models.IntegerField(default = 750)
 	
 	def __unicode__(self):
 		return self.name
