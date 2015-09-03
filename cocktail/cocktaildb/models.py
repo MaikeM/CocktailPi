@@ -5,7 +5,9 @@ from django.db import models
 class Cocktail(models.Model):
 	name = models.CharField(max_length=30, null = False)
 	nonalcoholic = models.BooleanField(default = False, verbose_name = "non-alcoholic")
-
+	description = models.TextField(default = "")
+	alc = models.IntegerField(default = 0, verbose_name="alcohol strength in Vol %")
+	
 	def __unicode__(self):
 		return self.name
 
@@ -13,6 +15,8 @@ class Ingredient(models.Model):
 	name = models.CharField(max_length=30, null = False)
 	position = models.IntegerField(null = False, unique = True)
 	nonalcoholic = models.BooleanField(default = False, verbose_name = "non-alcoholic" )
+	description = models.TextField(default = "")
+	alc = models.IntegerField(default = 0, verbose_name="alcohol strength in Vol %")
 	
 	def __unicode__(self):
 		return self.name
