@@ -24,17 +24,17 @@
         <a href="index.html">Home</a>
         <i class="icon-angle-right"></i>
     </li>-->
-    <li><a href="#">Select Cocktail</a>
+    <li><a href="#">Ingredients</a>
     </li>
 </ul>
-{% for cocktail in cocktails %}
+{% for ingredient in ingredients %}
 <div class="row-fluid">
     <div class="box blue span12">
         <div class="box-header">
             <h2>
 				<i class="hand-top"></i>
 				<span class="break"></span>
-					{{ cocktail.name }}
+					{{ ingredient.name }}
 			</h2>
 			<div class="box-icon">
                 <a class="btn-minimize" href="#"><i class="halflings-icon chevron-up"></i></a>
@@ -48,38 +48,13 @@
             </div>
             <div class="span10">
                 <p>
-                    <strong><font color="#111111">Description: </font></strong><font color="#5A5A5A">{{ cocktail.description }}</font>
+                    <strong><font color="#111111">Description: </font></strong><font color="#5A5A5A">{{ ingredient.description }}</font>
                     <br>
                     <br>
-                    <strong><font color="#111111">Ingredients: </font></strong><font color="#5A5A5A">
-                    {% for step in steps %}
-                        {% if cocktail == step.cocktail %}
-                            {% for ingredient in ingredients %}
-                                {% if step.ingredient == ingredient %}
-                                    <a href="{% url 'cocktaildb:ingredient' ingredient.id %}"> {{ingredient}} </a> 
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                    </font>
+                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{{ ingredient.alc }} Vol %</span>
                     <br>
                     <br>
-                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{{ cocktail.alc }} Vol %</span>
-                    <br>
-                    <br>
-                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ cocktail.name }}</span>
-                </p>
-                <p>
-                    <br>
-                </p>
-                <p>
-                    <form action="{% url 'cocktaildb:cocktail' cocktail.id 1 %}" method="post" align="center">
-                        <div class="actions">
-                            <input type="hidden" name="id" value="12423">
-							{% csrf_token %}
-                            <button class="btn btn-success" type="submit">Do it dude!</button>
-                        </div>
-                    </form>
+                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ ingredient.amount }}</span>
                 </p>
             </div>
             <div class="clearfix"></div>

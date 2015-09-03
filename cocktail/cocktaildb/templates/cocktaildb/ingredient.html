@@ -1,0 +1,60 @@
+{% extends "cocktaildb/base.html" %}
+{% load staticfiles %}
+
+{% block main-menu %}
+<div id="sidebar-left" class="span2">
+    <div class="nav-collapse sidebar-nav">
+        <ul class="nav nav-tabs nav-stacked main-menu">
+           <!-- <li><a href="index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a>
+            </li>-->
+			<li class="active"><a href="{% url 'cocktaildb:index'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Select cocktail</span></a>
+            </li>
+            <li class="active"><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Ingredients</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+<ul class="breadcrumb">
+    <li><a href="{% url 'cocktaildb:ingredients'%}">Ingredients</a></li>
+    <i class="icon-angle-right"></i>
+    <li><a href="#">{{ingredient}}</a>
+    </li>
+</ul>
+<div class="row-fluid">
+    <div class="box blue span12">
+        <div class="box-header">
+            <h2>
+				<i class="hand-top"></i>
+				<span class="break"></span>
+					{{ ingredient.name }}
+			</h2>
+			<div class="box-icon">
+                <a class="btn-minimize" href="#"><i class="halflings-icon chevron-up"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <div class="span2">
+                <a href="#">
+                    <img class="avatar" src="{% static 'cocktaildb/img/gin-and-tonic.jpg' %}" alt="{{ ingredient }}">
+                </a>
+            </div>
+            <div class="span10">
+                <p>
+                    <strong><font color="#111111">Description: </font></strong><font color="#5A5A5A">{{ ingredient.description }}</font>
+                    <br>
+                    <br>
+                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{{ ingredient.alc }} Vol %</span>
+                    <br>
+                    <br>
+                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ ingredient.amount }}</span>
+                </p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
