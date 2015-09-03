@@ -2,13 +2,21 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'cocktaildb/style.css' %}" />
 
-<p>Hello, world. You're at the cocktail index<p>
+<h1>Cocktail Database</h1>
 {% if cocktail_list %}
-    <ul>
-    {% for cocktail in cocktail_list %}
-        <li><a href="/cocktaildb/{{ cocktail.id }}/">{{ cocktail }}</a></li>
-    {% endfor %}
-    </ul>
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+
+{% for cocktail in cocktail_list %}
+      <div class="img">
+  		<a href="{% url 'cocktail' cocktail.id %}">
+    <img src="{% static 'test.jpg' %}" alt="{{ cocktail }}" width="110" height="90">
+  </a>
+  <div class="desc">{{ cocktail }}</div>
+</div>
+{% endfor %}
+
 {% else %}
     <p>No cocktails are available.</p>
 {% endif %}

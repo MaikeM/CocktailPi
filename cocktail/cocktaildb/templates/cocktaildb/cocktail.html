@@ -1,16 +1,8 @@
-{# Load the tag library #}
-{% load bootstrap3 %}
+{% load staticfiles %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
-{% block title %}
-
-    {{ cocktail }}
+<link rel="stylesheet" type="text/css" href="{% static 'cocktaildb/style.css' %}" />
+<h1>Cocktail Database - {{ cocktail }} </h1>
+    
 {% if mixstep_list %}
     <ul>
     {% for step in mixstep_list %}
@@ -22,5 +14,5 @@
 {% endif %}
 </p>
 </p>
- <li><a href="/cocktaildb/"> Back </a></li>
-{% endblock %}
+ <back><a href="/cocktaildb/"> Back </a></back>
+

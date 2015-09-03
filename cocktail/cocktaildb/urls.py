@@ -4,7 +4,7 @@ from cocktaildb import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^(?P<cocktail_id>[0-9]+)/$', views.cocktail, name='Cocktail'),
+    url(r'^(?P<cocktail_id>[0-9]+)/$', views.cocktail, name='cocktail'),
     url(r'^$', views.index, name='index'),
 ]
 
