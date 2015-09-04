@@ -9,7 +9,7 @@
             </li>-->
 			<li><a href="{% url 'cocktaildb:index'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Select cocktail</span></a>
             </li>
-            <li class="active"><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Ingredients</span></a>
+            <li class="active"><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-tint"></i><span class="hidden-tablet"> Ingredients</span></a>
             </li>
         </ul>
     </div>
@@ -29,7 +29,7 @@
 </ul>
 {% for ingredient in ingredients %}
 <div class="row-fluid">
-    <div class="box blue span12">
+    <div class="box {% cycle 'blue' 'yellow' 'pink' %} span12">
         <div class="box-header">
             <h2>
 				<i class="hand-top"></i>
@@ -43,7 +43,7 @@
         <div class="box-content">
             <div class="span2">
                 <a href="#">
-                    <img class="avatar" src="{% static 'cocktaildb/img/gin-and-tonic.jpg' %}" alt="{{ cocktail }}">
+                    <img class="avatar" src="{% static 'cocktaildb/img/ingredients/' %}{{ingredient.id}}.jpg" alt="{{ cocktail }}">
                 </a>
             </div>
             <div class="span10">
@@ -51,14 +51,18 @@
                     <strong><font color="#111111">Description: </font></strong><font color="#5A5A5A">{{ ingredient.description }}</font>
                     <br>
                     <br>
-                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{% if ingredient.nonalcoholic %}
-                    non-alcoholic
-                    {% else %}
-                    {{ ingredient.alc }} Vol %
-                    {% endif %}</span>
+                    {% if ingredient.nonalcoholic %}
+						<strong><font color="#111111">Strength:</font></strong> <span class="label label-info">non-alcoholic</span>
+					{% elif ingredient.alc < 20 %}
+						<strong><font color="#111111">Strength:</font></strong> <span class="label label-success">{{ingredient.alc}} Vol. %</span>
+					{% elif ingredient.alc < 40 %}
+					  	<strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">{{ingredient.alc}} Vol. %</span>
+					{% elif ingredient.alc < 100 %}
+						<strong><font color="#111111">Strength:</font></strong> <span class="label label-important">{{ingredient.alc}} Vol. %</span>
+					{% endif %}
                     <br>
                     <br>
-                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ ingredient.amount }}</span>
+                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ ingredient.amount }} ml</span>
                 </p>
             </div>
             <div class="clearfix"></div>
