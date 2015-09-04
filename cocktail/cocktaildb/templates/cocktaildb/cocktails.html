@@ -64,16 +64,18 @@
                     </font>
                     <br>
                     <br>
-                    <strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">
-                    {% if cocktail.nonalcoholic %}
-                    non-alcoholic
-                    {% else %}
-                    {{ cocktail.alc }} Vol %
-                    {% endif %}
-                    </span>
+					{% if cocktail.nonalcoholic %}
+						<strong><font color="#111111">Strength:</font></strong> <span class="label label-info">Virgin</span>
+					{% elif cocktail.alc < 12 %}
+						<strong><font color="#111111">Strength:</font></strong> <span class="label label-success">Softy</span>
+					{% elif cocktail.alc < 32 %}
+					  	<strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">Pimp</span>
+					{% elif cocktail.alc < 90 %}
+						<strong><font color="#111111">Strength:</font></strong> <span class="label label-important">Dude</span>
+					{% endif %}
+					<br>
                     <br>
-                    <br>
-                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">{{ cocktail.name }}</span>
+                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">Available</span>
                 </p>
                 <p>
                     <br>
