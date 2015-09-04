@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
+import random
 
 from .models import Cocktail, MixStep, Ingredient
 
 # Create your views here.
 def index(request):
+	COLORS = ['yellow', 'blue', 'pink']
 	cocktails = Cocktail.objects.all().order_by('name')
 	steps = MixStep.objects.all().order_by('ingredient__name')
 	ingredients = Ingredient.objects.all().order_by('name')
@@ -13,6 +15,7 @@ def index(request):
 	        'cocktails': cocktails,
 	        'ingredients': ingredients,
 	        'steps': steps,
+			'box': 'box ' + random.choice(COLORS) + ' span12',
 	})
 	return render(request, 'cocktaildb/cocktails.html', context)
 

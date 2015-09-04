@@ -9,7 +9,7 @@
             </li>-->
 			<li class="active"><a href="{% url 'cocktaildb:index'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Select cocktail</span></a>
             </li>
-            <li class="active"><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Ingredients</span></a>
+            <li><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Ingredients</span></a>
             </li>
         </ul>
     </div>
@@ -29,7 +29,7 @@
 </ul>
 {% for cocktail in cocktails %}
 <div class="row-fluid">
-    <div class="box blue span12">
+    <div class="box {% cycle 'blue' 'yellow' 'pink' %} span12">
         <div class="box-header">
             <h2>
 				<i class="hand-top"></i>
@@ -43,7 +43,7 @@
         <div class="box-content">
             <div class="span2">
                 <a href="#">
-                    <img class="avatar" src="{% static 'cocktaildb/img/gin-and-tonic.jpg' %}" alt="{{ cocktail }}">
+                    <img class="avatar" src="{% static 'cocktaildb/img/' %}{{cocktail.id}}.jpg" alt="{{ cocktail }}">
                 </a>
             </div>
             <div class="span10">
@@ -79,7 +79,7 @@
                     <br>
                 </p>
                 <p>
-                    <form action="{% url 'cocktaildb:cocktail' cocktail.id 1 %}" method="post" align="center">
+                    <form action="{% url 'cocktaildb:cocktail' cocktail.id 1 %}" method="post">
                         <div class="actions">
                             <input type="hidden" name="id" value="12423">
 							{% csrf_token %}
