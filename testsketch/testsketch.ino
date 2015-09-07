@@ -1,7 +1,7 @@
 #include <HX711.h>
 #include <Adafruit_NeoPixel.h>
 
-#define PIXEL_COUNT 240
+#define PIXEL_COUNT 100 //240
 #define PIXEL_PIN 6
 
 #define HX711_DOUT A1
@@ -18,15 +18,38 @@ long desired_weight = 0;
 long lastswitch = 0;
 int frame = 0;
 
-int posarray[3][3] = {
-  {
-    1 ,2 ,7  }
+int posarray[17][3] = {
+  { 1 ,1 ,5  }
   ,
-  {
-    2, 9, 14  }
+  { 2, 6, 10  }
   ,
-  {
-    3, 16, 21  }
+  { 3, 11, 15  }
+  ,
+  { 4, 16, 20  }
+  ,
+  { 5, 21, 25  }
+  ,
+  { 6, 26, 30  }
+  ,
+  { 7, 31, 35  }
+  ,
+  { 8, 36, 40  }
+  ,
+  { 9, 41, 45  }
+  ,
+  { 10, 46, 50  }
+  ,
+  { 11, 51, 55  }
+  ,
+  { 12, 56, 60  }
+  ,
+  { 13, 61, 65  } // ICE 
+  ,
+  { 50, 71, 75  }
+  ,
+  { 60, 75, 80  }
+  ,
+  { 70, 81, 85  }
 };
 
 HX711 scale(HX711_DOUT, HX711_PD_SCK);		// parameter "gain" is ommited; the default value 128 is used by the library
@@ -101,16 +124,37 @@ void loop() {
 
   //change lights according to current state
   switch(state){
-  case 0:
+  case 0: // off
     colorOff();
     break;
-  case 1:
+  case 1: // party
     colorParty();
     break;
-  case 2:
-  case 3:
+  case 2: // licht1
+  case 3: // licht 2
     colorAllExceptPosition(strip.Color(127,127,127), current_pos);
     colorPosition(current_pos);
+    break;
+  case 4: // waage
+    colorAllExceptPosition(strip.Color(127,127,127), 50);
+    colorPosition(50);
+    break;
+  case 5: // take glass
+    colorAllExceptPosition(strip.Color(127,127,127), 60);
+    colorPosition(60);
+    break;
+  case 6: // take shaker
+    colorAllExceptPosition(strip.Color(127,127,127), 70);
+    colorPosition(70);
+    break;
+  case 7: // fill shaker into glass
+    theaterChase(strip.Color(45, 137, 239), 50); // Blue
+    break;
+  case 8: // shake
+    colorWipe(strip.Color(45, 137, 239), 25); // Blue
+    break;
+  case 9: // mix
+    colorWipe(strip.Color(45, 137, 239), 50); // Blue
     break;
   case 255:
     colorError();
@@ -144,8 +188,34 @@ void colorAllExceptPosition(uint32_t c, int pos) {
   strip.show();
 }
 
+
+// Fill the dots one after the other with a color
+void colorWipe(uint32_t c, uint8_t wait) {
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, c);
+    strip.show();
+    delay(wait);
+  }
+}
+//Theatre-style crawling lights.
+void theaterChase(uint32_t c, uint8_t wait) {
+  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
+    for (int q=0; q < 3; q++) {
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, c);    //turn every third pixel on
+      }
+      strip.show();
+
+      delay(wait);
+
+      for (int i=0; i < strip.numPixels(); i=i+3) {
+        strip.setPixelColor(i+q, 0);        //turn every third pixel off
+      }
+    }
+  }
+}
 void colorOff() {
-  colorAll(0);
+   colorAll(0);
 }
 
 void colorParty() {

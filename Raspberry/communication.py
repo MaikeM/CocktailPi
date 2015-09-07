@@ -6,13 +6,15 @@ import time
 
 connection = sqlite3.connect("../cocktail/db.sqlite3")
 cursor = connection.cursor()
-#ser = serial.Serial('/dev/cocktailuino', 9600)
+ser = serial.Serial('/dev/cocktailuino', 9600)
 
 
 ###  Select Mix Steps from DB ###
 cursor.execute("SELECT * FROM cocktaildb_mixstep WHERE cocktail_id = " + sys.argv[1]) 
 print("fetchall:")
 result = cursor.fetchall() 
+ser.write('0        ')
+time.sleep(5)
 for r in result:
     print r
     step = r[1]
@@ -22,7 +24,7 @@ for r in result:
     ingredient = r[5]
     action = r[6]
     msg = ""
-    #webbrowser.open('http://127.0.0.1:8000/cocktail/' + str(cocktail_id) + '/' + str(step) +'/')
+    webbrowser.open('http://127.0.0.1:8000/cocktail/' + str(cocktail_id) + '/' + str(step) +'/')
     if (jar == 0 and action == 0):
     	msg = '5        ' # take glass
     elif (jar == 1 and action == 0):
@@ -50,23 +52,10 @@ for r in result:
     else:
     	print('Error')
     print (msg) 
-    #ser.write(msg) 
-    #while not ser.inWaiting():
-    #    time.sleep(0.001)
-    #    a = ser.readline()
-    #    print (a)
-    #    if (a == 'Error'):
-
-    #time.sleep(10)
-
-    
-#ser.write('2  2  123')
-#time.sleep(5)
-#ser.write('1  2  123')
-#time.sleep(5)
-#ser.write('4  0  123')
-#while ser.inWaiting():
-#	a = ser.readline()
-#	print (a)
-
-
+    ser.write(msg) 
+    while not ser.inWaiting():
+        time.sleep(0.001)
+    a = ser.readline()
+    print (a)
+    time.sleep(5)
+        
