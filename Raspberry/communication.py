@@ -15,6 +15,7 @@ print("fetchall:")
 result = cursor.fetchall() 
 ser.write('0        ')
 time.sleep(5)
+### For each Mix Step ###
 for r in result:
     print r
     step = r[1]
@@ -24,7 +25,9 @@ for r in result:
     ingredient = r[5]
     action = r[6]
     msg = ""
+    ### open current step in browser ###
     webbrowser.open('http://127.0.0.1:8000/cocktail/' + str(cocktail_id) + '/' + str(step) +'/')
+    ### write corresponding message ###
     if (jar == 0 and action == 0):
     	msg = '5        ' # take glass
     elif (jar == 1 and action == 0):
@@ -51,11 +54,20 @@ for r in result:
     	msg = '3  ' + str(ingredient) + '  ' + str(amount)
     else:
     	print('Error')
-    print (msg) 
-    ser.write(msg) 
-    while not ser.inWaiting():
-        time.sleep(0.001)
-    a = ser.readline()
-    print (a)
-    time.sleep(5)
+    print ("'{0}'".format(msg)) 
+    ### send message to arduino ###
+     
+
+    ### wait for right answer ###
+    answ = ""
+    while not msg in answ:
+        ser.write(msg)
+        while not ser.inWaiting():
+            time.sleep(0.001)
+        ### read answer of arduino
+        answ = ser.readline()
+        print ("'{0}'".format(answ))
+        #ser.write(msg)
+
+    time.sleep(5) ## TODO wait for arduino to continue
         
