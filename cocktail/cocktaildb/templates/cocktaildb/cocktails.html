@@ -81,7 +81,8 @@
                     <br>
                 </p>
                 <p>
-                    <form action="{% url 'cocktaildb:cocktail' cocktail.id 1 %}" method="post">
+                    <!--<form action="{% url 'cocktaildb:cocktail' cocktail.id 1 %}" method="post">-->
+                    <form action="{% url 'cocktaildb:mix' cocktail.id %}" method="post">
                         <div class="actions">
                             <input type="hidden" name="id" value="12423">
 							{% csrf_token %}
