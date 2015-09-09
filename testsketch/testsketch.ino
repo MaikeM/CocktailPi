@@ -108,7 +108,7 @@ void loop() {
       } 
       else if(state == 4) {
         Serial.println(scale.get_units(2), 1);
-        state = current_pos = msg.substring(3, 6).toInt();
+        state = msg.substring(3, 6).toInt();
       } 
       else {
         Serial.println(msg);
@@ -131,9 +131,15 @@ void loop() {
     colorParty();
     break;
   case 2: // licht1
-  case 3: // licht 2
-    colorAllExceptPosition(strip.Color(127,127,127), current_pos);
-    colorPosition(current_pos);
+  case 3: { // licht 2
+    long current_weight = scale.get_units(1);
+    
+    if (current_weight < desired_weight) {
+      colorAllExceptPosition(strip.Color(127,127,127), current_pos);
+      colorPosition(current_pos);
+    } else {
+      colorAll(strip.Color(127,127,127));
+    }}
     break;
   case 4: // waage
     colorAllExceptPosition(strip.Color(127,127,127), 50);
