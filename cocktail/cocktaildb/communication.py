@@ -18,7 +18,6 @@ ser = serial.Serial('/dev/cocktailuino', 9600)
 
 ###  Select Mix Steps from DB ###
 cursor.execute("SELECT * FROM cocktaildb_mixstep WHERE cocktail_id = " + sys.argv[1]) 
-print("fetchall:")
 result = cursor.fetchall() 
 ser.write('0        ')
 time.sleep(5)
@@ -61,20 +60,33 @@ for r in result:
     	msg = '3  ' + str(ingredient) + '  ' + str(amount)
     else:
     	print('Error')
-    print ("Pi: '{0}'".format(msg)) 
+   
     ### send message to arduino ###
      
 
     ### wait for right answer ###
     answ = ""
     while not msg in answ:
+        print ("Pi: '{0}'".format(msg)) 
         ser.write(msg)
         while not ser.inWaiting():
             time.sleep(0.001)
         ### read answer of arduino
         answ = ser.readline()
         print ("Arduino: '{0}'".format(answ))
-        #ser.write(msg)
-
-    time.sleep(5) ## TODO wait for arduino to continue
+    #while  ser.inWaiting():
+    #    print (ser.readline())
+    if (ingredient > 0 and ingredient < 13):
+        print ("weight")
+        answ = ""
+        while not "READY" in answ:
+            while not ser.inWaiting():
+                time.sleep(0.001)
+            ### read answer of arduino
+            answ = ser.readline()
+            print ("Arduino: '{0}'".format(answ))
+            time.sleep(2)
+            #ser.write(msg)
+    else:
+        time.sleep(5) ## TODO wait for arduino to continue
         

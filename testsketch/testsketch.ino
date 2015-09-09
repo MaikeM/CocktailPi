@@ -3,6 +3,8 @@
 
 #define PIXEL_COUNT 100 //240
 #define PIXEL_PIN 6
+#define PIXEL_PIN_WEIGHT 7
+#define PIXEL_COUNT_WEIGHT 11
 
 #define HX711_DOUT A1
 #define HX711_PD_SCK A0
@@ -18,30 +20,32 @@ long desired_weight = 0;
 long lastswitch = 0;
 int frame = 0;
 
+bool flag = false;
+
 int posarray[17][3] = {
-  { 1 ,1 ,5  }
+  { 1, 81 , 87  }
   ,
-  { 2, 6, 10  }
+  { 2, 74, 79  }
   ,
-  { 3, 11, 15  }
+  { 3, 66, 72  }
   ,
-  { 4, 16, 20  }
+  { 4, 59, 64  }
   ,
-  { 5, 21, 25  }
+  { 5, 52, 57  }
   ,
-  { 6, 26, 30  }
+  { 6, 44, 50  }
   ,
-  { 7, 31, 35  }
+  { 7, 0, 6  }
   ,
-  { 8, 36, 40  }
+  { 8, 8, 13  }
   ,
-  { 9, 41, 45  }
+  { 9, 15, 20  }
   ,
-  { 10, 46, 50  }
+  { 10, 22, 28  }
   ,
-  { 11, 51, 55  }
+  { 11, 30, 35  }
   ,
-  { 12, 56, 60  }
+  { 12, 37, 43  }
   ,
   { 13, 61, 65  } // ICE 
   ,
@@ -55,6 +59,7 @@ int posarray[17][3] = {
 HX711 scale(HX711_DOUT, HX711_PD_SCK);		// parameter "gain" is ommited; the default value 128 is used by the library
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel stripWeight = Adafruit_NeoPixel(PIXEL_COUNT_WEIGHT, PIXEL_PIN_WEIGHT, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   //Initialize serial connection
@@ -63,6 +68,8 @@ void setup() {
   //Initialize NeoPixels
   strip.begin();
   colorAll(strip.Color(127, 127, 127));
+  stripWeight.begin();
+  colorWeight(stripWeight.Color(127,127,127));
 
   //Initialize scale
   scale.set_scale(SCALE_CALIBRATION);                      // this value is obtained by calibrating the scale with known weights
@@ -75,16 +82,14 @@ void setup() {
 void loop() {
   //receive command via serial and change state accordingly
   String msg = "";
+  bool msg_send = false;
   if (Serial.available() > 0) {
     while (Serial.available()) {
       char c = Serial.read();  //gets one byte from serial buffer
       msg += c; //makes the String readString
       delay(5);  //slow looping to allow buffer to fill with next character
     }
-
-    //Serial.println(msg);
-    //Serial.println(msg.length());
-
+    
     if (msg.length() ==  9) {
 
       String cmd = msg.substring(0, 3);
@@ -95,7 +100,7 @@ void loop() {
         frame = 0;
         current_pos = msg.substring(3, 6).toInt();
         desired_weight = msg.substring(6, 9).toInt();
-        Serial.println(msg);
+        //Serial.println(msg);
 
       } 
       else if (state == 3) {
@@ -103,73 +108,114 @@ void loop() {
         current_pos = msg.substring(3, 6).toInt();
         long current_weight = scale.get_units(5);
         desired_weight = current_weight + msg.substring(6, 9).toInt();
-        Serial.println(msg);
-
+        //Serial.println(msg);
       } 
       else if(state == 4) {
-        Serial.println(scale.get_units(2), 1);
+        //Serial.println(scale.get_units(2), 1);
         state = msg.substring(3, 6).toInt();
       } 
       else {
-        Serial.println(msg);
+        //Serial.println(msg);
       }
 
 
     } 
     else {
-      Serial.println("ERROR");
+      //Serial.println("ERROR");
+      msg= "ERROR";
     }
   }
 
+  if (!msg_send && msg != ""){
+    msg_send = true;
+    Serial.println(msg);
+  }
 
+  
   //change lights according to current state
   switch(state){
   case 0: // off
     colorOff();
+    flag = false;
     break;
   case 1: // party
     colorParty();
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   case 2: // licht1
   case 3: { // licht 2
-    long current_weight = scale.get_units(1);
-    
+    long current_weight = scale.get_units(2);
     if (current_weight < desired_weight) {
       colorAllExceptPosition(strip.Color(127,127,127), current_pos);
       colorPosition(current_pos);
+      flag = false;
+      if (current_weight < (desired_weight*0.1f)){
+        colorWeight(stripWeight.Color(255,0,0));
+      } else if (current_weight < (desired_weight*0.2f)){
+        colorWeight(stripWeight.Color(205,38,38));
+      } else if (current_weight < (desired_weight*0.4f)){
+        colorWeight(stripWeight.Color(255,140,0));
+      } else if (current_weight < (desired_weight*0.6f)){
+        colorWeight(stripWeight.Color(255,215,0));
+      } else if (current_weight < (desired_weight*0.8f)){
+        colorWeight(stripWeight.Color(255,255,0));
+      } else {
+        colorWeight(stripWeight.Color(205,205,0));
+        }
+        
     } else {
       colorAll(strip.Color(127,127,127));
+      colorWeight(stripWeight.Color(127,255,0));
+      if (!flag) {flag = true;
+      Serial.println("READY");}
     }}
     break;
   case 4: // waage
     colorAllExceptPosition(strip.Color(127,127,127), 50);
     colorPosition(50);
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   case 5: // take glass
     colorAllExceptPosition(strip.Color(127,127,127), 60);
     colorPosition(60);
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   case 6: // take shaker
     colorAllExceptPosition(strip.Color(127,127,127), 70);
     colorPosition(70);
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   case 7: // fill shaker into glass
     theaterChase(strip.Color(45, 137, 239), 50); // Blue
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   case 8: // shake
     colorWipe(strip.Color(45, 137, 239), 25); // Blue
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   case 9: // mix
     colorWipe(strip.Color(45, 137, 239), 50); // Blue
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   case 255:
     colorError();
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   default:
     colorError();
+    colorWeight(stripWeight.Color(127,127,127));
+    flag = false;
     break;
   }
-
+  
   delay(250);
 }
 
@@ -179,6 +225,14 @@ void colorAll(uint32_t c) {
   }
   strip.show();
 }
+
+void colorWeight(uint32_t c) {
+  for (uint16_t i=0; i<stripWeight.numPixels(); i++) {
+    stripWeight.setPixelColor(i, c);  
+  }
+  stripWeight.show();
+}
+
 
 void colorAllExceptPosition(uint32_t c, int pos) {
   int bounds[] = {0,0};
@@ -242,11 +296,6 @@ void colorPosition(int pos) {
   for (int i = 0; i < sizeof(posarray)/sizeof(posarray[0]); i++) {
     if (posarray[i][0] == pos) {
       for (int j = posarray[i][1]; j < posarray[i][2]+1; j++) {
-        /*if (frame == posarray[i][2] -j) {
-         strip.setPixelColor(j, strip.Color(255, 255, 0));
-         } else {
-         strip.setPixelColor(j, strip.Color(0, 127, 127));
-         }*/
         strip.setPixelColor(j, strip.Color(45, 137, 239));
       }
 
