@@ -3,6 +3,13 @@ import sys
 import webbrowser
 import serial
 import time
+import os
+import django
+
+if __name__ == '__main__':  
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cocktaildb.settings')
+
+    django.setup()
 
 connection = sqlite3.connect("../cocktail/db.sqlite3")
 cursor = connection.cursor()

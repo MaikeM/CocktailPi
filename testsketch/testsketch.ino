@@ -5,6 +5,12 @@
 #define PIXEL_PIN 6
 #define PIXEL_PIN_WEIGHT 7
 #define PIXEL_COUNT_WEIGHT 11
+#define PIXEL_PIN_BOTTOM 5
+#define PIXEL_COUNT_BOTTOM 67
+#define PIXEL_PIN_GLASS 4
+#define PIXEL_COUNT_GLASS 11
+#define PIXEL_PIN_ICE 7
+#define PIXEL_COUNT_ICE 20
 
 #define HX711_DOUT A1
 #define HX711_PD_SCK A0
@@ -60,6 +66,9 @@ HX711 scale(HX711_DOUT, HX711_PD_SCK);		// parameter "gain" is ommited; the defa
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel stripWeight = Adafruit_NeoPixel(PIXEL_COUNT_WEIGHT, PIXEL_PIN_WEIGHT, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel stripBottom = Adafruit_NeoPixel(PIXEL_COUNT_BOTTOM, PIXEL_PIN_BOTTOM, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel stripGlass = Adafruit_NeoPixel(PIXEL_COUNT_GLASS, PIXEL_PIN_GLASS, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel stripIce = Adafruit_NeoPixel(PIXEL_COUNT_ICE, PIXEL_PIN_ICE, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   //Initialize serial connection
@@ -70,6 +79,13 @@ void setup() {
   colorAll(strip.Color(127, 127, 127));
   stripWeight.begin();
   colorWeight(stripWeight.Color(127,127,127));
+  stripBottom.begin();
+  colorBottom(stripBottom.Color(127,127,127));
+  stripGlass.begin();
+  colorGlass(stripGlass.Color(127,127,127));
+  stripIce.begin();
+  colorIce(stripIce.Color(127,127,127));
+  
 
   //Initialize scale
   scale.set_scale(SCALE_CALIBRATION);                      // this value is obtained by calibrating the scale with known weights
@@ -231,6 +247,27 @@ void colorWeight(uint32_t c) {
     stripWeight.setPixelColor(i, c);  
   }
   stripWeight.show();
+}
+
+void colorBottom(uint32_t c) {
+  for (uint16_t i=0; i<stripBottom.numPixels(); i++) {
+    stripBottom.setPixelColor(i, c);  
+  }
+  stripBottom.show();
+}
+
+void colorGlass(uint32_t c) {
+  for (uint16_t i=0; i<stripGlass.numPixels(); i++) {
+    stripGlass.setPixelColor(i, c);  
+  }
+  stripGlass.show();
+}
+
+void colorIce(uint32_t c) {
+  for (uint16_t i=0; i<stripIce.numPixels(); i++) {
+    stripIce.setPixelColor(i, c);  
+  }
+  stripIce.show();
 }
 
 
