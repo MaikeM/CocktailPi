@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 import random
@@ -51,3 +51,11 @@ def ingredients(request):
 	        'ingredients': ingredients,
 	})
 	return render(request, 'cocktaildb/ingredients.html', context)
+
+def mix(request, cocktail_id):
+	import subprocess
+	import os
+	print (os.getcwd())
+	print (cocktail_id)
+	subprocess.Popen(["python", "cocktaildb/communication.py" , "{}".format(cocktail_id)])
+	return redirect('cocktaildb:index')

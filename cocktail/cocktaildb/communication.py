@@ -3,8 +3,15 @@ import sys
 import webbrowser
 import serial
 import time
+#import os
+#import django
 
-connection = sqlite3.connect("../cocktail/db.sqlite3")
+#if __name__ == '__main__':  
+#    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cocktaildb.settings')
+
+#    django.setup()
+
+connection = sqlite3.connect("db.sqlite3")
 cursor = connection.cursor()
 ser = serial.Serial('/dev/cocktailuino', 9600)
 
@@ -54,7 +61,7 @@ for r in result:
     	msg = '3  ' + str(ingredient) + '  ' + str(amount)
     else:
     	print('Error')
-    print ("'{0}'".format(msg)) 
+    print ("Pi: '{0}'".format(msg)) 
     ### send message to arduino ###
      
 
@@ -66,7 +73,7 @@ for r in result:
             time.sleep(0.001)
         ### read answer of arduino
         answ = ser.readline()
-        print ("'{0}'".format(answ))
+        print ("Arduino: '{0}'".format(answ))
         #ser.write(msg)
 
     time.sleep(5) ## TODO wait for arduino to continue
