@@ -43,24 +43,33 @@
         </form>-->
         <form action="{% url 'cocktaildb:index' %}" method="post">
             {% csrf_token %}
-            <select>
-                <option name="cocktail" value="0"><font color="#5A5A5A">----</font></option>
+            <select name="cocktail">
+                <option value="0"><font color="#5A5A5A">----</font></option>
             {% for cocktail in cocktails %}
-                <option name="cocktail" value="{{ cocktail }}" /><font color="#5A5A5A">{{ cocktail }}</font></option>
+                <option value="{{ cocktail.id }}" /><font color="#5A5A5A">{{ cocktail }}</font></option>
             {% endfor %}
             </select>
-            <select>
-                <option name="ingredient" value="0"><font color="#5A5A5A">----</font></option>
+            <select name="ingredient" >
+                <option value="0"><font color="#5A5A5A">----</font></option>
             {% for ingredient in ingredients %}
-                <option name="ingredient" value="{{ ingredient }}" /><font color="#5A5A5A">{{ ingredient }}</font></option>
+                <option value="{{ ingredient.id }}" /><font color="#5A5A5A">{{ ingredient }}</font></option>
             {% endfor %}
             </select>
-            <button class="btn btn-success" type="submit">Filter</button>
+             <select name="alc" >
+                <option value="0"><font color="#5A5A5A">----</font></option>
+                <option value="1"><font color="#5A5A5A">Non-alcoholic</font></option>
+                <option value="2"><font color="#5A5A5A">Alcoholic</font></option>
+                <!--<option value="2"><font color="#5A5A5A">Softy</font></option>
+                <option value="3"><font color="#5A5A5A">Pimp</font></option>
+                <option value="4"><font color="#5A5A5A">Dude</font></option>-->
+            </select>
+            <button class="btn btn-success" type="submit" name="submit">Filter</button>
         </form>
     </p>
 </div>
 
 {% for cocktail in cocktails %}
+{% if filteron == False or cocktail.id in selected %}
 <div class="row-fluid">
     <div class="box {% cycle 'blue' 'yellow' 'pink' %} span12">
         <div class="box-header">
@@ -128,5 +137,6 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endfor %}
 {% endblock %}
