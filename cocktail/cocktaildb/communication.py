@@ -46,6 +46,10 @@ for r in result:
     	msg = '9        ' # mix
     elif (action == 4):
     	msg = '1        ' # finish
+    elif (ingredient == 13 and amount < 10):
+        msg = '10 13 ' + str(amount) + '  '
+    elif (ingredient == 13 and amount >= 10):
+        msg = '10 13 ' + str(amount) + ' '
     elif (ingredient >= 10 and amount < 10):
     	msg ='3  ' + str(ingredient) + ' ' + str(amount) + '  '
     elif(ingredient >= 10 and amount >= 10 and amount < 100):  
@@ -85,7 +89,7 @@ for r in result:
             ### read answer of arduino
             answ = ser.readline()
             print ("Arduino: '{0}'".format(answ))
-            time.sleep(2)
+            time.sleep(5)
             #ser.write(msg)
     else:
         time.sleep(5) ## TODO wait for arduino to continue

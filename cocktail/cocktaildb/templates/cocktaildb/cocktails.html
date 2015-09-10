@@ -27,6 +27,39 @@
     <li><a href="#">Select Cocktail</a>
     </li>
 </ul>
+
+<div class="span10">
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+     <p>
+        <!--<form action="{% url 'cocktaildb:index' %}" method="post">
+            {% for choice in question.choice_set.all %}
+                <div class="actions">
+                    <input type="radio" name="cocktail" value="{{cocktail}}"/> <label for="{{ cocktail }}">{{ cocktail }}</label>
+                    <input type="radio" name="cocktail" value="cocktail"/> <label for="cocktail">cocktail</label>
+                </div>
+            {% endfor %}
+            {% csrf_token %}
+            <button class="btn btn-success" type="submit">Filter</button>
+        </form>-->
+        <form action="{% url 'cocktaildb:index' %}" method="post">
+            {% csrf_token %}
+            <select>
+                <option name="cocktail" value="0"><font color="#5A5A5A">----</font></option>
+            {% for cocktail in cocktails %}
+                <option name="cocktail" value="{{ cocktail }}" /><font color="#5A5A5A">{{ cocktail }}</font></option>
+            {% endfor %}
+            </select>
+            <select>
+                <option name="ingredient" value="0"><font color="#5A5A5A">----</font></option>
+            {% for ingredient in ingredients %}
+                <option name="ingredient" value="{{ ingredient }}" /><font color="#5A5A5A">{{ ingredient }}</font></option>
+            {% endfor %}
+            </select>
+            <button class="btn btn-success" type="submit">Filter</button>
+        </form>
+    </p>
+</div>
+
 {% for cocktail in cocktails %}
 <div class="row-fluid">
     <div class="box {% cycle 'blue' 'yellow' 'pink' %} span12">

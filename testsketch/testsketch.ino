@@ -2,24 +2,24 @@
 #include <Adafruit_NeoPixel.h>
 
 #define PIXEL_COUNT 100 //240
-#define PIXEL_PIN 6
+#define PIXEL_PIN 3
 #define PIXEL_PIN_WEIGHT 7
 #define PIXEL_COUNT_WEIGHT 11
-#define PIXEL_PIN_BOTTOM 5
+#define PIXEL_PIN_BOTTOM 6
 #define PIXEL_COUNT_BOTTOM 67
-#define PIXEL_PIN_GLASS 4
-#define PIXEL_COUNT_GLASS 11
-#define PIXEL_PIN_ICE 7
-#define PIXEL_COUNT_ICE 20
+#define PIXEL_PIN_GLASS 5
+#define PIXEL_COUNT_GLASS 15
+#define PIXEL_PIN_ICE 4
+#define PIXEL_COUNT_ICE 15
 
 #define HX711_DOUT A1
 #define HX711_PD_SCK A0
 
-#define SCALE_CALIBRATION -408.50f
+#define SCALE_CALIBRATION -418.76f
 
 //overall state in which we are
 //0 = lights off, 1 = party mode, 2 = take bottle and pour, 3 = return bottle
-int state = 0;
+int state = 42;
 int current_pos = -1;
 long desired_weight = 0;
 
@@ -85,6 +85,7 @@ void setup() {
   colorGlass(stripGlass.Color(127,127,127));
   stripIce.begin();
   colorIce(stripIce.Color(127,127,127));
+  colorShaker(stripIce.Color(127,127,127));
   
 
   //Initialize scale
@@ -163,7 +164,7 @@ void loop() {
   case 3: { // licht 2
     long current_weight = scale.get_units(2);
     if (current_weight < desired_weight) {
-      colorAllExceptPosition(strip.Color(127,127,127), current_pos);
+      colorAllExceptPosition(strip.Color(0,255,0), current_pos);
       colorPosition(current_pos);
       flag = false;
       if (current_weight < (desired_weight*0.1f)){
@@ -181,48 +182,48 @@ void loop() {
         }
         
     } else {
-      colorAll(strip.Color(127,127,127));
+      colorAll(strip.Color(0,255,0));
       colorWeight(stripWeight.Color(127,255,0));
       if (!flag) {flag = true;
       Serial.println("READY");}
     }}
     break;
   case 4: // waage
-    colorAllExceptPosition(strip.Color(127,127,127), 50);
-    colorPosition(50);
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
   case 5: // take glass
-    colorAllExceptPosition(strip.Color(127,127,127), 60);
-    colorPosition(60);
-    colorWeight(stripWeight.Color(127,127,127));
+    colorGlass(stripGlass.Color(45, 137, 239));
     flag = false;
     break;
   case 6: // take shaker
-    colorAllExceptPosition(strip.Color(127,127,127), 70);
-    colorPosition(70);
-    colorWeight(stripWeight.Color(127,127,127));
+    colorShaker(stripIce.Color(45, 137, 239));
     flag = false;
     break;
   case 7: // fill shaker into glass
-    theaterChase(strip.Color(45, 137, 239), 50); // Blue
+    colorWipe(strip.Color(45, 137, 239), 50); // Blue
+    colorGlass(stripGlass.Color(45, 137, 239));
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
   case 8: // shake
-    colorWipe(strip.Color(45, 137, 239), 25); // Blue
+    theaterChase(strip.Color(45, 137, 239), 25); // Blue
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
   case 9: // mix
     colorWipe(strip.Color(45, 137, 239), 50); // Blue
-    colorWeight(stripWeight.Color(127,127,127));
     flag = false;
+    break;
+  case 10: //Ice
+    colorIce(stripIce.Color(45, 137, 239));
+    flag = false;
+    break;
+  case 42:
+    colorAll(strip.Color(0,255,0));
     break;
   case 255:
     colorError();
-    colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
   default:
@@ -264,12 +265,17 @@ void colorGlass(uint32_t c) {
 }
 
 void colorIce(uint32_t c) {
-  for (uint16_t i=0; i<stripIce.numPixels(); i++) {
+  for (uint16_t i=0; i<7; i++) {
     stripIce.setPixelColor(i, c);  
   }
   stripIce.show();
 }
-
+void colorShaker(uint32_t c) {
+  for (uint16_t i=7; i<15; i++) {
+    stripIce.setPixelColor(i, c);  
+  }
+  stripIce.show();
+}
 
 void colorAllExceptPosition(uint32_t c, int pos) {
   int bounds[] = {0,0};
@@ -333,7 +339,7 @@ void colorPosition(int pos) {
   for (int i = 0; i < sizeof(posarray)/sizeof(posarray[0]); i++) {
     if (posarray[i][0] == pos) {
       for (int j = posarray[i][1]; j < posarray[i][2]+1; j++) {
-        strip.setPixelColor(j, strip.Color(45, 137, 239));
+        strip.setPixelColor(j, strip.Color(0, 0, 255));
       }
 
       strip.show();
