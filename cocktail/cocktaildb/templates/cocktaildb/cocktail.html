@@ -52,33 +52,8 @@
             <!-- start: Content -->
             <!--<div id="content" class="span10">-->
                 <!--<div class="row-fluid">-->
-                    <div class="box-content" style="height: 216px;
-">
-                        <div style="
-                                    padding-left: 30px;
-                                    padding-top: 20px;
-                                    padding-bottom: 20px;x">
-                            <!--<div class="box-content">-->
-                            {% if cocktail = 0 %}
-                                <p> <font color="#5A5A5A">There is no order. Please connect to "CocktailPi" and login with "CocktailPi". Then select your Cocktail. </font> </p>
-                            {% elif current_step = 0%}
-                                <p> <font color="#5A5A5A">
-                                    Current ID: {{current_id}} <br>
-                                    Please tap on the weight measuring module to start. </font> </p>
-                            {% else %}
-                            {% for step in mixsteps %}
-                                {% if step.step = current_step %}
-
-                                <p> <font color="#5A5A5A">{{step}}</font> </p>
-                                {% else %}
-                                <p> <font color="#D8D8D8">{{step}}</font> </p>
-                                {% endif %}
-                            {% endfor %}
-                            <!--<p> <a href=""> Previous </a><a href=""> Next</a></p>-->
-                            {% endif %}
-                            <!--</div>-->
-                        </div>
-                        <div class="clearfix"></div>
+                    <div class="box-content" id="step" style="height: 216px;">
+                        We are loading...
                     </div>
                 <!--</div>-->
             <!--</div>--> <!-- end: Content -->
@@ -144,6 +119,28 @@
     <script src="{% static 'cocktaildb/js/retina.js' %}"></script>
 
     <script src="{% static 'cocktaildb/js/custom.js' %}"></script>
+
+ 
+    <script>
+        function autoreload() {      
+            $("#step").load( "{% url 'cocktaildb:pidisplay' %}");
+        }
+
+
+        function sleep(milliseconds) {
+          var start = new Date().getTime();
+          for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+              break;
+            }
+          }
+        };
+
+        autoreload();
+        setInterval(function(){ autoreload() }, 1000);
+
+    </script>
+
     <!-- end: JavaScript-->
 
 </body>

@@ -212,8 +212,10 @@ def pidisplay(request):
         'current_step': current_step,
         'current_id': current_id
     })
-    return render(request, 'cocktaildb/cocktail.html', context)
+    return render(request, 'cocktaildb/cocktail_content.html', context)
 
+def pidisplayframe(request):
+    return render(request, 'cocktaildb/cocktail.html')
 
 
 def ingredients(request):

@@ -1,0 +1,25 @@
+<div style="
+            padding-left: 30px;
+            padding-top: 20px;
+            padding-bottom: 20px;x">
+    <!--<div class="box-content">-->
+    {% if cocktail = 0 %}
+        <p> <font color="#5A5A5A">There is no order. Please connect to "CocktailPi" and login with "CocktailPi". Then select your Cocktail. </font> </p>
+    {% elif current_step = 0%}
+        <p> <font color="#5A5A5A">
+            Current ID: {{current_id}} <br>
+            Please tap on the weight measuring module to start. </font> </p>
+    {% else %}
+    {% for step in mixsteps %}
+        {% if step.step = current_step %}
+
+        <p> <font color="#5A5A5A">{{step}}</font> </p>
+        {% else %}
+        <p> <font color="#D8D8D8">{{step}}</font> </p>
+        {% endif %}
+    {% endfor %}
+    <!--<p> <a href=""> Previous </a><a href=""> Next</a></p>-->
+    {% endif %}
+    <!--</div>-->
+</div>
+<div class="clearfix"></div>
