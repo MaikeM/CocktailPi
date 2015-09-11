@@ -1,53 +1,133 @@
-{% extends "cocktaildb/base.html" %}
+
+<html>
 {% load staticfiles %}
+<head>
+    <!-- start: Meta -->
+    <meta charset="utf-8">
+    <title>Bar Dude Control Panel</title>
+    <meta name="description" content="Bootstrap Metro Dashboard">
+    <meta name="author" content="Dennis Ji">
+    <meta name="keyword" content="Metro, Metro UI, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <!-- end: Meta -->
 
-{% block main-menu %}
-<div id="sidebar-left" class="span2">
-    <div class="nav-collapse sidebar-nav">
-        <ul class="nav nav-tabs nav-stacked main-menu">
-           <!-- <li><a href="index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a>
-            </li>-->
-			<li class="active"><a href="{% url 'cocktaildb:index'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Select cocktail</span></a>
-            </li>
-            <li><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-tint"></i><span class="hidden-tablet"> Ingredients</span></a>
-            </li>
-        </ul>
-    </div>
-</div>
+    <!-- start: Mobile Specific -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- end: Mobile Specific -->
 
-{% endblock %}
+    <!-- start: CSS -->
+    <link id="bootstrap-style" href="{% static 'cocktaildb/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'cocktaildb/css/bootstrap-responsive.min.css' %}" rel="stylesheet">
+    <link id="base-style" href="{% static 'cocktaildb/css/style.css' %}" rel="stylesheet">
+    <link id="base-style-responsive" href="{% static 'cocktaildb/css/style-responsive.css' %}" rel="stylesheet">
+    <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext' rel='stylesheet' type='text/css'>-->
+    <!-- end: CSS -->
 
-{% block content %}
-<ul class="breadcrumb">
-    <!--<li>
-        <i class="icon-home"></i>
-        <a href="index.html">Home</a>
-        <i class="icon-angle-right"></i>
-    </li>-->
-    <li><a href="{% url 'cocktaildb:index'%}">Select Cocktail</a></li>
-    <i class="icon-angle-right"></i>
-    <li><a href="#">{{cocktail}}</a></li>
-</ul>
-<div class="row-fluid">
-    <div class="box blue span12">
-        <div class="box-content">
-            <div class="span10">
-            	<div class="box-content">
-                	<p>
-                    	<font color="#5A5A5A">{{mixstep}}</font>
-                	</p>
-                	<p>
-                    	<br>
-                	</p>
-                	<p>	    
-                		{% if mixstep.action != 4 %}  
-                			<a href="{% url 'cocktaildb:cocktail' cocktail.id next_step %}"> 	Next </a>
-                		{% endif %}
-                	</p>
-           		</div>
+    <!-- start: Favicon -->
+    <link rel="shortcut icon" href="{% static 'cocktaildb/img/favicon.ico' %}">
+    <!-- end: Favicon -->
+</head>
+
+<body>
+    <!-- start: Header -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse"></a>
+                <a class="brand" href="index.html"><span>bar dude - mixing {{cocktail}}</span></a>
             </div>
-            <div class="clearfix"></div>
         </div>
     </div>
-</div>
-{% endblock %}
+    <!-- start: Header -->
+
+    <div class="container-fluid-full">
+        <div class="row-fluid">
+
+            <noscript>
+                <div class="alert alert-block span10">
+                    <h4 class="alert-heading">Warning!</h4>
+                    <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+                </div>
+            </noscript>
+
+            <!-- start: Content -->
+            <!--<div id="content" class="span10">-->
+                <!--<div class="row-fluid">-->
+                    <div class="box-content">
+                        <div style="
+                                    padding-left: 30px;
+                                    padding-top: 20px;
+                                    padding-bottom: 20px;x">
+                            <!--<div class="box-content">-->
+                                <p> <font color="#5A5A5A">{{mixstep}}</font> </p>
+                            <!--</div>-->
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                <!--</div>-->
+            <!--</div>--> <!-- end: Content -->
+        <!--/#content.span10-->
+ 
+    <!--/fluid-row-->
+
+    <footer></footer>
+
+    <!-- start: JavaScript-->
+
+    <script src="{% static 'cocktaildb/js/jquery-1.9.1.min.js' %}"></script>
+    <script src="{% static 'cocktaildb/js/jquery-migrate-1.0.0.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery-ui-1.10.0.custom.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.ui.touch-punch.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/modernizr.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.cookie.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/fullcalendar.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.dataTables.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/excanvas.js' %}"></script>
+    <script src="{% static 'cocktaildb/js/jquery.flot.js' %}"></script>
+    <script src="{% static 'cocktaildb/js/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'cocktaildb/js/jquery.flot.stack.js' %}"></script>
+    <script src="{% static 'cocktaildb/js/jquery.flot.resize.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.chosen.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.uniform.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.cleditor.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.noty.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.elfinder.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.raty.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.iphone.toggle.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.uploadify-3.1.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.gritter.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.imagesloaded.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.masonry.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.knob.modified.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/jquery.sparkline.min.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/counter.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/retina.js' %}"></script>
+
+    <script src="{% static 'cocktaildb/js/custom.js' %}"></script>
+    <!-- end: JavaScript-->
+
+</body>
+</html>
