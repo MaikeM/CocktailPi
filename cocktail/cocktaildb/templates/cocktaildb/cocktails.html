@@ -21,11 +21,12 @@
     </li>
 </ul>
 
-<div class="span10">
+<div class="row-fluid">
+	<div class="span12">
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-     <p>
         <form action="{% url 'cocktaildb:index' %}" method="post">
-            {% csrf_token %}
+            <div class="span10"> 
+			{% csrf_token %}
             <select name="cocktail">
                 <option value="0"><font color="#5A5A5A">----</font></option>
             {% for cocktail in cocktails %}
@@ -46,15 +47,16 @@
                 <option value="3"><font color="#5A5A5A">Pimp</font></option>
                 <option value="4"><font color="#5A5A5A">Dude</font></option>-->
             </select>
+			</div>
             <button class="btn btn-success" type="submit" name="submit">Filter</button>
         </form>
-    </p>
+	</div>
 </div>
 
 {% for cocktail in cocktails %}
 {% if filteron == False or cocktail.id in selected %}
 <div class="row-fluid">
-    <div class="box {% cycle 'blue' 'yellow' 'pink' %} span12">
+    <div class="box {% cycle 'blue' 'yellow' 'pink' 'green' %} span12">
         <div class="box-header">
             <h2>
 				<i class="hand-top"></i>
@@ -65,7 +67,7 @@
                 <a class="btn-minimize" href="#"><i class="halflings-icon chevron-up"></i></a>
             </div>
         </div>
-        <div class="box-content">
+        <div class="box-content" style="display:none;">
             <div class="span2">
                 <a href="#">
                     <img class="avatar" src="{% static 'cocktaildb/img/cocktails/' %}{{cocktail.id}}.jpg" alt="{{ cocktail }}">
@@ -106,7 +108,7 @@
                             {% for ingredient in ingredients %}
                                 {% if step.ingredient == ingredient %}
                                     {% if ingredient.amount > step.amount %}
-                                        <span class="label label-success">{{ingredient}} available
+                                        <span class="label label-success" style="padding:1px;">{{ingredient}} available
                                         </span> </br>
                                     {% else %}
                                         <span class="label label-important">{{ingredient}} not available
