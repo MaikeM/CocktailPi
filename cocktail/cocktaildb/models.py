@@ -57,3 +57,23 @@ class MixStep(models.Model):
 
 	class Meta:
 		unique_together = ('cocktail','step',)
+
+
+
+class Order(models.Model):
+	cocktail = models.ForeignKey("Cocktail")
+	step = models.IntegerField(default = 0)
+	date = models.DateTimeField(auto_now=True)
+	done = models.BooleanField(default = False)
+
+	def __unicode__(self):
+		text = ""
+		if (self.done):
+			text = "Cocktail " + str(self.cocktail) + " from " + str(self.date) + " is ready."
+		else:
+			text = "Cocktail " + str(self.cocktail) + " from " + str(self.date) + " is at step " + str(self.step) + "."
+		return text
+
+
+
+

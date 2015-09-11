@@ -2,25 +2,37 @@
 #include <Adafruit_NeoPixel.h>
 
 #define PIXEL_COUNT 100 //240
-#define PIXEL_PIN 6
+#define PIXEL_PIN 3
+
 #define PIXEL_PIN_WEIGHT 7
 #define PIXEL_COUNT_WEIGHT 11
-#define PIXEL_PIN_BOTTOM 5
+
+#define PIXEL_PIN_BOTTOM 6
 #define PIXEL_COUNT_BOTTOM 67
-#define PIXEL_PIN_GLASS 4
-#define PIXEL_COUNT_GLASS 11
-#define PIXEL_PIN_ICE 7
-#define PIXEL_COUNT_ICE 20
+
+#define PIXEL_PIN_GLASS 5
+#define PIXEL_COUNT_GLASS 15
+
+#define PIXEL_PIN_ICE 4
+#define PIXEL_COUNT_ICE 15
 
 #define HX711_DOUT A1
 #define HX711_PD_SCK A0
 
-#define SCALE_CALIBRATION -408.50f
+#define SCALE_CALIBRATION -418.76f
+
+//predefined Colors
+uint32_t c1;
+uint32_t c2;
+uint32_t c3;
+
+
 
 //overall state in which we are
 //0 = lights off, 1 = party mode, 2 = take bottle and pour, 3 = return bottle
-int state = 0;
+int state = 42;
 int current_pos = -1;
+long last_weight = 0;
 long desired_weight = 0;
 
 long lastswitch = 0;
@@ -29,29 +41,29 @@ int frame = 0;
 bool flag = false;
 
 int posarray[17][3] = {
-  { 1, 81 , 87  }
+  { 7, 81 , 87  }
   ,
-  { 2, 74, 79  }
+  { 8, 74, 79  }
   ,
-  { 3, 66, 72  }
+  { 9, 66, 72  }
   ,
-  { 4, 59, 64  }
+  { 10, 59, 64  }
   ,
-  { 5, 52, 57  }
+  { 11, 52, 57  }
   ,
-  { 6, 44, 50  }
+  { 12, 44, 50  }
   ,
-  { 7, 0, 6  }
+  { 1, 0, 6  }
   ,
-  { 8, 8, 13  }
+  { 2, 8, 13  }
   ,
-  { 9, 15, 20  }
+  { 3, 15, 20  }
   ,
-  { 10, 22, 28  }
+  { 4, 22, 28  }
   ,
-  { 11, 30, 35  }
+  { 5, 30, 35  }
   ,
-  { 12, 37, 43  }
+  { 6, 37, 43  }
   ,
   { 13, 61, 65  } // ICE 
   ,
@@ -62,6 +74,19 @@ int posarray[17][3] = {
   { 70, 81, 85  }
 };
 
+int weight_steady[] = {4, 5, 6};
+int weight_circle[] = {0, 1, 2, 3, 10, 9, 8, 7};
+int weight_frame = 0;
+long weight_frame_time = 0;
+
+long touch_time;
+long touch_wait_time;
+int touched = false;
+boolean touched_flag = false;
+
+boolean fill_finished = false;
+long fill_finished_time = 0;
+
 HX711 scale(HX711_DOUT, HX711_PD_SCK);		// parameter "gain" is ommited; the default value 128 is used by the library
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
@@ -70,21 +95,28 @@ Adafruit_NeoPixel stripBottom = Adafruit_NeoPixel(PIXEL_COUNT_BOTTOM, PIXEL_PIN_
 Adafruit_NeoPixel stripGlass = Adafruit_NeoPixel(PIXEL_COUNT_GLASS, PIXEL_PIN_GLASS, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel stripIce = Adafruit_NeoPixel(PIXEL_COUNT_ICE, PIXEL_PIN_ICE, NEO_GRB + NEO_KHZ800);
 
+
+
 void setup() {
   //Initialize serial connection
   Serial.begin(9600);
 
   //Initialize NeoPixels
   strip.begin();
-  colorAll(strip.Color(127, 127, 127));
+  colorAllPositions(strip.Color(127, 127, 127));
   stripWeight.begin();
   colorWeight(stripWeight.Color(127,127,127));
   stripBottom.begin();
   colorBottom(stripBottom.Color(127,127,127));
   stripGlass.begin();
-  colorGlass(stripGlass.Color(127,127,127));
+  colorGlass(stripGlass.Color(127, 127, 127));
   stripIce.begin();
   colorIce(stripIce.Color(127,127,127));
+  colorShaker(stripIce.Color(127,127,127));
+  
+  c1 = strip.Color(255, 0, 0);
+  c2 = strip.Color(0, 255, 0);
+  c3 = strip.Color(0, 0, 255);
   
 
   //Initialize scale
@@ -113,23 +145,45 @@ void loop() {
       state = cmd.toInt();
 
       if (state == 2) {
-        frame = 0;
+        frame = 0;        
+        flag = false;
         current_pos = msg.substring(3, 6).toInt();
         desired_weight = msg.substring(6, 9).toInt();
+        last_weight = scale.get_units(5);
         //Serial.println(msg);
 
       } 
       else if (state == 3) {
         frame = 0;
+        flag = false;
         current_pos = msg.substring(3, 6).toInt();
-        long current_weight = scale.get_units(5);
-        desired_weight = current_weight + msg.substring(6, 9).toInt();
+        last_weight = scale.get_units(5);
+        desired_weight = last_weight + msg.substring(6, 9).toInt();
         //Serial.println(msg);
+      }
+      
+      else if (state == 10) {
+        flag = false;
+        last_weight = scale.get_units(5);
+        desired_weight = last_weight + 10;
+      }             
+
+      else if (state == 11) {
+        touched = false;
+        last_weight = scale.get_units(5);
+        desired_weight = last_weight + 10;
+        touch_time = millis();
+        touch_wait_time = msg.substring(3, 9).toInt();
+        touched_flag = false;
       } 
-      else if(state == 4) {
-        //Serial.println(scale.get_units(2), 1);
-        state = msg.substring(3, 6).toInt();
+      
+      else if (state == 5 || state == 6) {
+        last_weight = scale.get_units(5);
+        desired_weight = last_weight + 10;
+        flag = false;
       } 
+      
+      
       else {
         //Serial.println(msg);
       }
@@ -156,73 +210,113 @@ void loop() {
     break;
   case 1: // party
     colorParty();
-    colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
-  case 2: // licht1
-  case 3: { // licht 2
-    long current_weight = scale.get_units(2);
-    if (current_weight < desired_weight) {
-      colorAllExceptPosition(strip.Color(127,127,127), current_pos);
-      colorPosition(current_pos);
-      flag = false;
-      if (current_weight < (desired_weight*0.1f)){
-        colorWeight(stripWeight.Color(255,0,0));
-      } else if (current_weight < (desired_weight*0.2f)){
-        colorWeight(stripWeight.Color(205,38,38));
-      } else if (current_weight < (desired_weight*0.4f)){
-        colorWeight(stripWeight.Color(255,140,0));
-      } else if (current_weight < (desired_weight*0.6f)){
-        colorWeight(stripWeight.Color(255,215,0));
-      } else if (current_weight < (desired_weight*0.8f)){
-        colorWeight(stripWeight.Color(255,255,0));
-      } else {
-        colorWeight(stripWeight.Color(205,205,0));
-        }
-        
-    } else {
-      colorAll(strip.Color(127,127,127));
-      colorWeight(stripWeight.Color(127,255,0));
-      if (!flag) {flag = true;
-      Serial.println("READY");}
-    }}
-    break;
-  case 4: // waage
-    colorAllExceptPosition(strip.Color(127,127,127), 50);
-    colorPosition(50);
-    colorWeight(stripWeight.Color(127,127,127));
-    flag = false;
-    break;
+  case 2: // weight mode whole
+  case 3: // weight mode add
   case 5: // take glass
-    colorAllExceptPosition(strip.Color(127,127,127), 60);
-    colorPosition(60);
-    colorWeight(stripWeight.Color(127,127,127));
-    flag = false;
-    break;
   case 6: // take shaker
-    colorAllExceptPosition(strip.Color(127,127,127), 70);
-    colorPosition(70);
+  case 10:// add ice
+    {
+      long current_weight = scale.get_units(1);
+      if (current_weight < desired_weight) {
+        fill_finished = false;
+        colorEverything(strip.Color(0,255,0));
+        if (state == 2 || state == 3) {
+          colorPosition(current_pos);
+        }
+        else if (state == 5) {
+          colorGlass(stripGlass.Color(0,0,255));
+        }
+        else if (state == 6) {
+          colorShaker(stripIce.Color(0,0,255));
+        }
+        else if (state == 10) {
+          colorIce(stripIce.Color(0,0,255));
+        }
+        long already_added = current_weight - last_weight;
+        if (already_added < 0) already_added = 0;
+        long needed = desired_weight - last_weight;
+        int greenness = map(already_added, 0, needed, 0, 255);
+        int redness = map(already_added, 0, needed, 255, 0);
+        int fill_speed = map(already_added, 0, needed, 100, 0);
+    
+        colorWeightDuringFill(stripWeight.Color(redness, greenness, 0), fill_speed);      
+        
+      } else {
+        
+        colorAllPositions(strip.Color(0,255,0));
+        colorWeight(stripWeight.Color(0, 255, 0));
+        if (!fill_finished) {
+          fill_finished = true;
+          fill_finished_time = millis();
+        } else if (millis() - fill_finished_time > 500) {
+          if (!flag) {
+            flag = true;
+            Serial.println("READY");
+          }
+        }
+      }
+    }
+    break;
+    
+  case 4: // return weight
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
+    
   case 7: // fill shaker into glass
-    theaterChase(strip.Color(45, 137, 239), 50); // Blue
+    colorWipe(strip.Color(45, 137, 239), 50); // Blue
+    colorGlass(stripGlass.Color(45, 137, 239));
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
+    
   case 8: // shake
-    colorWipe(strip.Color(45, 137, 239), 25); // Blue
+    theaterChase(strip.Color(45, 137, 239), 25); // Blue
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
+    
   case 9: // mix
     colorWipe(strip.Color(45, 137, 239), 50); // Blue
-    colorWeight(stripWeight.Color(127,127,127));
     flag = false;
+    break;
+    
+ 
+  case 11: //Wait for touch
+    {  
+    long current_weight = scale.get_units(1);
+      if (current_weight < desired_weight && !touched) {
+        long already_waited = millis() - touch_time;
+        if (already_waited < touch_wait_time) {
+          int progress = map(already_waited, 0, touch_wait_time, 0, 100);
+          int greenness = map(already_waited, 0, touch_wait_time, 255, 0);
+          int redness = map(already_waited, 0, touch_wait_time, 0, 255);
+          colorWeightDuringWait(stripWeight.Color(redness, greenness, 0), progress);
+        } else {
+          colorWeight(stripWeight.Color(255, 0, 0));
+          if (!touched_flag) {
+            touched_flag = true;
+          Serial.println("NO_INPUT");
+         }
+        }
+      }
+      else if (current_weight > desired_weight || touched == true) {
+        touched = true;
+        colorWeight(stripWeight.Color(0, 255, 0));
+         if (!touched_flag) {
+          touched_flag = true;
+          Serial.println("TOCUHED");
+         }
+      } 
+    }
+    break;    
+  case 42:
+    colorEverything(strip.Color(0,255,0));
     break;
   case 255:
     colorError();
-    colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
   default:
@@ -231,45 +325,97 @@ void loop() {
     flag = false;
     break;
   }
-  
-  delay(250);
+  delay(50);
+  strip.show();
+  stripGlass.show();
+  stripIce.show();
+  stripBottom.show();
+  stripWeight.show();
 }
 
-void colorAll(uint32_t c) {
+void colorAllPositions(uint32_t c) {
   for (uint16_t i=0; i<strip.numPixels(); i++) {
     strip.setPixelColor(i, c);  
   }
-  strip.show();
+  //strip.show();
 }
+
+void colorEverything(uint32_t c) {
+  colorAllPositions(c);
+  colorIce(c);
+  colorShaker(c);
+  colorGlass(c);
+  colorBottom(c);
+  colorWeight(c);
+}
+
 
 void colorWeight(uint32_t c) {
   for (uint16_t i=0; i<stripWeight.numPixels(); i++) {
     stripWeight.setPixelColor(i, c);  
   }
-  stripWeight.show();
+  //stripWeight.show();
+}
+
+void colorWeightDuringFill(uint32_t c, int fill_speed) {
+  if (millis() - weight_frame_time > map(fill_speed, 0, 100, 500, 50)) {
+    for (int i=0; i<sizeof(weight_steady)/sizeof(weight_steady[0]); i++) {
+      stripWeight.setPixelColor(weight_steady[i], c);
+    }
+    for (int i=0; i<sizeof(weight_circle)/sizeof(weight_circle[0]); i++) {
+      stripWeight.setPixelColor(weight_circle[i], 0);  
+    }
+    stripWeight.setPixelColor(weight_circle[weight_frame%(sizeof(weight_circle)/sizeof(weight_circle[0]))], c);
+    stripWeight.setPixelColor(weight_circle[(weight_frame+1)%(sizeof(weight_circle)/sizeof(weight_circle[0]))], c);
+    weight_frame_time = millis();
+    weight_frame++;
+  } 
+}
+
+void colorWeightDuringWait(uint32_t c, int progress) {
+    for (int i=0; i<sizeof(weight_steady)/sizeof(weight_steady[0]); i++) {
+      stripWeight.setPixelColor(weight_steady[i], c);
+    }
+    
+    int length = sizeof(weight_circle)/sizeof(weight_circle[0]);
+    int color_until = map(progress, 0, 100, length, 0);
+    
+    for (int i=0; i<sizeof(weight_circle)/sizeof(weight_circle[0]); i++) {
+      if (i<color_until) {
+        stripWeight.setPixelColor(weight_circle[i], c);
+      } else {
+        stripWeight.setPixelColor(weight_circle[i], 0);
+      }  
+    }
+
 }
 
 void colorBottom(uint32_t c) {
   for (uint16_t i=0; i<stripBottom.numPixels(); i++) {
     stripBottom.setPixelColor(i, c);  
   }
-  stripBottom.show();
+  //stripBottom.show();
 }
 
 void colorGlass(uint32_t c) {
   for (uint16_t i=0; i<stripGlass.numPixels(); i++) {
     stripGlass.setPixelColor(i, c);  
   }
-  stripGlass.show();
+  //stripGlass.show();
 }
 
 void colorIce(uint32_t c) {
-  for (uint16_t i=0; i<stripIce.numPixels(); i++) {
+  for (uint16_t i=0; i<7; i++) {
     stripIce.setPixelColor(i, c);  
   }
-  stripIce.show();
+  //stripIce.show();
 }
-
+void colorShaker(uint32_t c) {
+  for (uint16_t i=7; i<15; i++) {
+    stripIce.setPixelColor(i, c);  
+  }
+  //stripIce.show();
+}
 
 void colorAllExceptPosition(uint32_t c, int pos) {
   int bounds[] = {0,0};
@@ -279,10 +425,18 @@ void colorAllExceptPosition(uint32_t c, int pos) {
   for (uint16_t i=0; i<(bounds[0]); i++) {
     strip.setPixelColor(i, c);  
   }
-  for (uint16_t i=(bounds[1]); i<strip.numPixels(); i++) {
+  for (uint16_t i=(bounds[1]+1); i<strip.numPixels(); i++) {
     strip.setPixelColor(i, c);  
   }
-  strip.show();
+  //strip.show();
+}
+void colorEverythingExceptPosition(uint32_t c, int pos) {
+  colorAllExceptPosition(c, pos);
+  colorGlass(c);
+  colorBottom(c);
+  colorWeight(c);
+  colorShaker(c);
+  colorIce(c);
 }
 
 
@@ -312,31 +466,67 @@ void theaterChase(uint32_t c, uint8_t wait) {
   }
 }
 void colorOff() {
-   colorAll(0);
+   colorEverything(0);
 }
 
 void colorParty() {
   if (millis()-lastswitch > 250) {
-    colorAllRandom();
+    colorEverythingRandom();
     lastswitch = millis();
   }
 }
 
-void colorAllRandom() {
+void colorAllPositionsRandom() {
   for (int i=0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, strip.Color(random(127), random(255), random(255)));
   }
-  strip.show();
+  //strip.show();
+}
+
+void colorBottomRandom() {
+  for (int i=0; i < stripBottom.numPixels(); i++) {
+    stripBottom.setPixelColor(i, strip.Color(random(127), random(255), random(255)));
+  }
+  //stripBottom.show();
+}
+
+void colorWeightRandom() {
+  for (int i=0; i < stripWeight.numPixels(); i++) {
+    stripWeight.setPixelColor(i, strip.Color(random(127), random(255), random(255)));
+  }
+  //stripWeight.show();
+}
+
+void colorIceRandom() {
+  for (int i=0; i < stripIce.numPixels(); i++) {
+    stripIce.setPixelColor(i, strip.Color(random(127), random(255), random(255)));
+  }
+  //stripIce.show();
+}
+
+void colorGlassRandom() {
+  for (int i=0; i < stripGlass.numPixels(); i++) {
+    stripGlass.setPixelColor(i, strip.Color(random(127), random(255), random(255)));
+  }
+  //stripGlass.show();
+}
+
+void colorEverythingRandom() {
+  colorAllPositionsRandom();
+  colorBottomRandom();
+  colorWeightRandom();
+  colorIceRandom();
+  colorGlassRandom();
 }
 
 void colorPosition(int pos) {
   for (int i = 0; i < sizeof(posarray)/sizeof(posarray[0]); i++) {
     if (posarray[i][0] == pos) {
       for (int j = posarray[i][1]; j < posarray[i][2]+1; j++) {
-        strip.setPixelColor(j, strip.Color(45, 137, 239));
+        strip.setPixelColor(j, strip.Color(0, 0, 255));
       }
 
-      strip.show();
+      //strip.show();
       //frame = ((frame) % (posarray[i][2]-posarray[i][1]))+1;
 
       break;
@@ -346,11 +536,11 @@ void colorPosition(int pos) {
 
 void colorError() {
   if (millis()-lastswitch > 250 && strip.getPixelColor(0) == 0) {
-    colorAll(strip.Color(255, 0, 0));
+    colorEverything(strip.Color(255, 0, 0));
     lastswitch = millis();
   } 
   else if (millis()-lastswitch > 250) {
-    colorAll(0);
+    colorEverything(0);
     lastswitch = millis();
   }
 }

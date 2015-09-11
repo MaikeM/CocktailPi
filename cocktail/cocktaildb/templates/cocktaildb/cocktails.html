@@ -5,8 +5,6 @@
 <div id="sidebar-left" class="span2">
     <div class="nav-collapse sidebar-nav">
         <ul class="nav nav-tabs nav-stacked main-menu">
-           <!-- <li><a href="index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a>
-            </li>-->
 			<li class="active"><a href="{% url 'cocktaildb:index'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Select cocktail</span></a>
             </li>
             <li><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-tint"></i><span class="hidden-tablet"> Ingredients</span></a>
@@ -19,15 +17,42 @@
 
 {% block content %}
 <ul class="breadcrumb">
-    <!--<li>
-        <i class="icon-home"></i>
-        <a href="index.html">Home</a>
-        <i class="icon-angle-right"></i>
-    </li>-->
     <li><a href="#">Select Cocktail</a>
     </li>
 </ul>
+
+<div class="span10">
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+     <p>
+        <form action="{% url 'cocktaildb:index' %}" method="post">
+            {% csrf_token %}
+            <select name="cocktail">
+                <option value="0"><font color="#5A5A5A">----</font></option>
+            {% for cocktail in cocktails %}
+                <option value="{{ cocktail.id }}" /><font color="#5A5A5A">{{ cocktail }}</font></option>
+            {% endfor %}
+            </select>
+            <select name="ingredient" >
+                <option value="0"><font color="#5A5A5A">----</font></option>
+            {% for ingredient in ingredients %}
+                <option value="{{ ingredient.id }}" /><font color="#5A5A5A">{{ ingredient }}</font></option>
+            {% endfor %}
+            </select>
+             <select name="alc" >
+                <option value="0"><font color="#5A5A5A">----</font></option>
+                <option value="1"><font color="#5A5A5A">Non-alcoholic</font></option>
+                <option value="2"><font color="#5A5A5A">Alcoholic</font></option>
+                <!--<option value="2"><font color="#5A5A5A">Softy</font></option>
+                <option value="3"><font color="#5A5A5A">Pimp</font></option>
+                <option value="4"><font color="#5A5A5A">Dude</font></option>-->
+            </select>
+            <button class="btn btn-success" type="submit" name="submit">Filter</button>
+        </form>
+    </p>
+</div>
+
 {% for cocktail in cocktails %}
+{% if filteron == False or cocktail.id in selected %}
 <div class="row-fluid">
     <div class="box {% cycle 'blue' 'yellow' 'pink' %} span12">
         <div class="box-header">
@@ -75,13 +100,27 @@
 					{% endif %}
 					<br>
                     <br>
-                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">Available</span>
+                    <strong><font color="#111111">Status:</font></strong>  </br>
+                    {% for step in steps %}
+                        {% if cocktail == step.cocktail %}
+                            {% for ingredient in ingredients %}
+                                {% if step.ingredient == ingredient %}
+                                    {% if ingredient.amount > step.amount %}
+                                        <span class="label label-success">{{ingredient}} available
+                                        </span> </br>
+                                    {% else %}
+                                        <span class="label label-important">{{ingredient}} not available
+                                        </span> </br>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 </p>
                 <p>
                     <br>
                 </p>
                 <p>
-                    <!--<form action="{% url 'cocktaildb:cocktail' cocktail.id 1 %}" method="post">-->
                     <form action="{% url 'cocktaildb:mix' cocktail.id %}" method="post">
                         <div class="actions">
                             <input type="hidden" name="id" value="12423">
@@ -95,5 +134,6 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endfor %}
 {% endblock %}
