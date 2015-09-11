@@ -79,6 +79,11 @@ int weight_circle[] = {0, 1, 2, 3, 10, 9, 8, 7};
 int weight_frame = 0;
 long weight_frame_time = 0;
 
+long touch_time;
+long touch_wait_time;
+int touched = false;
+boolean touched_flag = false;
+
 boolean fill_finished = false;
 long fill_finished_time = 0;
 
@@ -140,7 +145,8 @@ void loop() {
       state = cmd.toInt();
 
       if (state == 2) {
-        frame = 0;
+        frame = 0;        
+        flag = false;
         current_pos = msg.substring(3, 6).toInt();
         desired_weight = msg.substring(6, 9).toInt();
         last_weight = scale.get_units(5);
@@ -149,16 +155,35 @@ void loop() {
       } 
       else if (state == 3) {
         frame = 0;
+        flag = false;
         current_pos = msg.substring(3, 6).toInt();
         last_weight = scale.get_units(5);
         desired_weight = last_weight + msg.substring(6, 9).toInt();
         //Serial.println(msg);
       }
-      else if (state == 3) {
-        frame = 0;
-        long current_weight = scale.get_units(5);
-        desired_weight = current_weight + 50;
+      
+      else if (state == 10) {
+        flag = false;
+        last_weight = scale.get_units(5);
+        desired_weight = last_weight + 10;
+      }             
+
+      else if (state == 11) {
+        touched = false;
+        last_weight = scale.get_units(5);
+        desired_weight = last_weight + 10;
+        touch_time = millis();
+        touch_wait_time = msg.substring(3, 9).toInt();
+        touched_flag = false;
       } 
+      
+      else if (state == 5 || state == 6) {
+        last_weight = scale.get_units(5);
+        desired_weight = last_weight + 10;
+        flag = false;
+      } 
+      
+      
       else {
         //Serial.println(msg);
       }
@@ -187,69 +212,106 @@ void loop() {
     colorParty();
     flag = false;
     break;
-  case 2: // licht1
-  case 3: { // licht 2
-    long current_weight = scale.get_units(1);
-    if (current_weight < desired_weight) {
-      fill_finished = false;
-      colorEverythingExceptPosition(strip.Color(0,255,0), current_pos);
-      colorPosition(current_pos);
-      flag = false;
-      long already_added = current_weight - last_weight;
-      if (already_added < 0) already_added = 0;
-      long needed = desired_weight - last_weight;
-      int greenness = map(already_added, 0, needed, 0, 255);
-      int redness = map(already_added, 0, needed, 255, 0);
-      int fill_speed = map(already_added, 0, needed, 100, 0);
-  
-      colorWeightDuringFill(stripWeight.Color(redness, greenness, 0), fill_speed);      
-      
-    } else {
-      
-      colorAllPositions(strip.Color(0,255,0));
-      colorWeight(stripWeight.Color(0, 255, 0));
-      if (!fill_finished) {
-        fill_finished = true;
-        fill_finished_time = millis();
-      } else if (millis() - fill_finished_time > 500) {
-        if (!flag) {
-          flag = true;
-          Serial.println("READY");
+  case 2: // weight mode whole
+  case 3: // weight mode add
+  case 5: // take glass
+  case 6: // take shaker
+  case 10:// add ice
+    {
+      long current_weight = scale.get_units(1);
+      if (current_weight < desired_weight) {
+        fill_finished = false;
+        colorEverything(strip.Color(0,255,0));
+        if (state == 2 || state == 3) {
+          colorPosition(current_pos);
+        }
+        else if (state == 5) {
+          colorGlass(stripGlass.Color(0,0,255));
+        }
+        else if (state == 6) {
+          colorShaker(stripIce.Color(0,0,255));
+        }
+        else if (state == 10) {
+          colorIce(stripIce.Color(0,0,255));
+        }
+        long already_added = current_weight - last_weight;
+        if (already_added < 0) already_added = 0;
+        long needed = desired_weight - last_weight;
+        int greenness = map(already_added, 0, needed, 0, 255);
+        int redness = map(already_added, 0, needed, 255, 0);
+        int fill_speed = map(already_added, 0, needed, 100, 0);
+    
+        colorWeightDuringFill(stripWeight.Color(redness, greenness, 0), fill_speed);      
+        
+      } else {
+        
+        colorAllPositions(strip.Color(0,255,0));
+        colorWeight(stripWeight.Color(0, 255, 0));
+        if (!fill_finished) {
+          fill_finished = true;
+          fill_finished_time = millis();
+        } else if (millis() - fill_finished_time > 500) {
+          if (!flag) {
+            flag = true;
+            Serial.println("READY");
+          }
         }
       }
-    }}
+    }
     break;
-  case 4: // waage
+    
+  case 4: // return weight
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
-  case 5: // take glass
-    colorGlass(stripGlass.Color(45, 137, 239));
-    flag = false;
-    break;
-  case 6: // take shaker
-    colorShaker(stripIce.Color(45, 137, 239));
-    flag = false;
-    break;
+    
   case 7: // fill shaker into glass
     colorWipe(strip.Color(45, 137, 239), 50); // Blue
     colorGlass(stripGlass.Color(45, 137, 239));
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
+    
   case 8: // shake
     theaterChase(strip.Color(45, 137, 239), 25); // Blue
     colorWeight(stripWeight.Color(127,127,127));
     flag = false;
     break;
+    
   case 9: // mix
     colorWipe(strip.Color(45, 137, 239), 50); // Blue
     flag = false;
     break;
-  case 10: //Ice
-    colorIce(stripIce.Color(45, 137, 239));
-    flag = false;
-    break;
+    
+ 
+  case 11: //Wait for touch
+    {  
+    long current_weight = scale.get_units(1);
+      if (current_weight < desired_weight && !touched) {
+        long already_waited = millis() - touch_time;
+        if (already_waited < touch_wait_time) {
+          int progress = map(already_waited, 0, touch_wait_time, 0, 100);
+          int greenness = map(already_waited, 0, touch_wait_time, 255, 0);
+          int redness = map(already_waited, 0, touch_wait_time, 0, 255);
+          colorWeightDuringWait(stripWeight.Color(redness, greenness, 0), progress);
+        } else {
+          colorWeight(stripWeight.Color(255, 0, 0));
+          if (!touched_flag) {
+            touched_flag = true;
+          Serial.println("NO_INPUT");
+         }
+        }
+      }
+      else if (current_weight > desired_weight || touched == true) {
+        touched = true;
+        colorWeight(stripWeight.Color(0, 255, 0));
+         if (!touched_flag) {
+          touched_flag = true;
+          Serial.println("TOCUHED");
+         }
+      } 
+    }
+    break;    
   case 42:
     colorEverything(strip.Color(0,255,0));
     break;
@@ -305,10 +367,27 @@ void colorWeightDuringFill(uint32_t c, int fill_speed) {
     }
     stripWeight.setPixelColor(weight_circle[weight_frame%(sizeof(weight_circle)/sizeof(weight_circle[0]))], c);
     stripWeight.setPixelColor(weight_circle[(weight_frame+1)%(sizeof(weight_circle)/sizeof(weight_circle[0]))], c);
-    stripWeight.show();
     weight_frame_time = millis();
     weight_frame++;
   } 
+}
+
+void colorWeightDuringWait(uint32_t c, int progress) {
+    for (int i=0; i<sizeof(weight_steady)/sizeof(weight_steady[0]); i++) {
+      stripWeight.setPixelColor(weight_steady[i], c);
+    }
+    
+    int length = sizeof(weight_circle)/sizeof(weight_circle[0]);
+    int color_until = map(progress, 0, 100, length, 0);
+    
+    for (int i=0; i<sizeof(weight_circle)/sizeof(weight_circle[0]); i++) {
+      if (i<color_until) {
+        stripWeight.setPixelColor(weight_circle[i], c);
+      } else {
+        stripWeight.setPixelColor(weight_circle[i], 0);
+      }  
+    }
+
 }
 
 void colorBottom(uint32_t c) {
