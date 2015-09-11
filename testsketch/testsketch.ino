@@ -84,6 +84,11 @@ long touch_wait_time;
 int touched = false;
 boolean touched_flag = false;
 
+long mix_time;
+long mix_wait_time;
+int shake_mode;
+long shake_switch_time = 0;
+
 boolean fill_finished = false;
 long fill_finished_time = 0;
 
@@ -160,6 +165,14 @@ void loop() {
         last_weight = scale.get_units(5);
         desired_weight = last_weight + msg.substring(6, 9).toInt();
         //Serial.println(msg);
+      }
+      
+      else if(state == 7 || state == 8 || state == 9)  {
+       shake_mode = 0;
+       desired_weight = scale.get_units(5);
+       mix_time = millis();
+       mix_wait_time = msg.substring(3, 9).toInt();
+       flag = false; 
       }
       
       else if (state == 10) {
@@ -266,21 +279,79 @@ void loop() {
     break;
     
   case 7: // fill shaker into glass
-    colorWipe(strip.Color(45, 137, 239), 50); // Blue
-    colorGlass(stripGlass.Color(45, 137, 239));
-    colorWeight(stripWeight.Color(127,127,127));
-    flag = false;
+   {
+      if (shake_mode == 0) {
+        if (scale.get_units(1) > desired_weight - 50){
+          colorWeight(stripWeight.Color(0, 0, 255));
+        } else {
+          shake_mode++;
+        } 
+        
+      } else {
+        if (scale.get_units(1) < desired_weight - 200){
+          colorWeightDuringFill(stripWeight.Color(255, 0, 0), 100);
+        } else {
+          colorEverything(stripWeight.Color(0, 255, 0));
+          colorWeight(stripWeight.Color(0, 255, 0));
+          if (!touched_flag) {
+            touched_flag = true;
+            Serial.println("READY");
+          }
+        } 
+      } 
+    }
     break;
     
+    
   case 8: // shake
-    theaterChase(strip.Color(45, 137, 239), 25); // Blue
-    colorWeight(stripWeight.Color(127,127,127));
-    flag = false;
+    {
+      if (shake_mode == 0) {
+        if (scale.get_units(1) > desired_weight - 50){
+          colorWeight(stripWeight.Color(0, 0, 255));
+        } else {
+          shake_mode++;
+        } 
+        
+      } else if (shake_mode == 1) {
+        long already_waited = millis() - mix_time;
+        if (already_waited < mix_wait_time) {
+           theaterChase(strip.Color(0, 0, 255), 25);
+           colorWeightDuringFill(stripWeight.Color(0, 0, 255), 100);
+        } else {
+           shake_mode++;
+        }
+        
+      } else {
+        if (scale.get_units(1) < desired_weight - 50){
+          colorWeightDuringFill(stripWeight.Color(255, 0, 0), 100);
+        } else {
+          colorEverything(stripWeight.Color(0, 255, 0));
+          colorWeight(stripWeight.Color(0, 255, 0));
+          if (!touched_flag) {
+            touched_flag = true;
+            Serial.println("READY");
+          }
+        } 
+      } 
+    }
     break;
     
   case 9: // mix
-    colorWipe(strip.Color(45, 137, 239), 50); // Blue
-    flag = false;
+    {
+      long already_waited = millis() - mix_time;
+          if (already_waited < mix_wait_time) {
+            //int progress = map(already_waited, 0, mix_wait_time, 0, 100);
+            int greenness = map(already_waited, 0, mix_wait_time, 0, 250);
+            int blueness = map(already_waited, 0, mix_wait_time, 250, 0);
+            colorWeightDuringFill(stripWeight.Color(0, greenness, blueness), 100);
+          } else {
+            colorWeight(stripWeight.Color(0, 255, 0));
+            if (!touched_flag) {
+              touched_flag = true;
+            Serial.println("READY");
+           }
+          }
+    }
     break;
     
  
@@ -307,7 +378,7 @@ void loop() {
         colorWeight(stripWeight.Color(0, 255, 0));
          if (!touched_flag) {
           touched_flag = true;
-          Serial.println("TOUCHED");
+          Serial.println("TOCUHED");
          }
       } 
     }
@@ -348,6 +419,7 @@ void colorEverything(uint32_t c) {
   colorBottom(c);
   colorWeight(c);
 }
+
 void colorEverythingExceptWeight(uint32_t c) {
   colorAllPositions(c);
   colorIce(c);
@@ -355,6 +427,8 @@ void colorEverythingExceptWeight(uint32_t c) {
   colorGlass(c);
   colorBottom(c);
 }
+
+
 
 void colorWeight(uint32_t c) {
   for (uint16_t i=0; i<stripWeight.numPixels(); i++) {
@@ -456,7 +530,6 @@ void colorWipe(uint32_t c, uint8_t wait) {
 }
 //Theatre-style crawling lights.
 void theaterChase(uint32_t c, uint8_t wait) {
-  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
     for (int q=0; q < 3; q++) {
       for (int i=0; i < strip.numPixels(); i=i+3) {
         strip.setPixelColor(i+q, c);    //turn every third pixel on
@@ -469,7 +542,7 @@ void theaterChase(uint32_t c, uint8_t wait) {
         strip.setPixelColor(i+q, 0);        //turn every third pixel off
       }
     }
-  }
+  
 }
 void colorOff() {
    colorEverything(0);
