@@ -180,17 +180,40 @@ def ingredient(request, ingredient_id):
 def cocktail(request, cocktail_id, step):
 	try:
 		cocktail = Cocktail.objects.get(pk=cocktail_id)
-		mixstep = MixStep.objects.get(cocktail_id=cocktail, step = step) 
+		mixsteps = MixStep.objects.filter(cocktail_id=cocktail, step=step) 
 		a = int(step)
-		a = a+1
 		context = RequestContext(request, {
 	        'cocktail': cocktail, 
-	        'mixstep': mixstep,
-	        'next_step': a
+	        'mixsteps': mixsteps,
+	        'current_step': a
 		})
 	except Cocktail.DoesNotExist:
 		raise Http404("Cocktail does not exist")
 	return render(request, 'cocktaildb/cocktail.html', context)
+
+def pidisplay(request):
+    orders = Order.objects.filter(done=False).order_by('date')
+    if orders:
+        order = orders[0]
+        cocktail = order.cocktail
+        print cocktail.id
+        steplist = [order.step-1, order.step, order.step+1]
+        steps = MixStep.objects.filter(cocktail=cocktail, step__in=steplist)
+        current_step = order.step
+        current_id = order.id
+    else:
+        cocktail = 0
+        steps = None
+        current_step = None
+        current_id = None
+    context = RequestContext(request, {
+        'cocktail': cocktail, 
+        'mixsteps': steps,
+        'current_step': current_step,
+        'current_id': current_id
+    })
+    return render(request, 'cocktaildb/cocktail.html', context)
+
 
 
 def ingredients(request):
