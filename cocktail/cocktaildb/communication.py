@@ -3,10 +3,14 @@ import sys
 import webbrowser
 import serial
 import time
+import datetime
 
 connection = sqlite3.connect("../db.sqlite3")
 cursor = connection.cursor()
 ser = serial.Serial('/dev/cocktailuino', 9600)
+ ### open current step in browser ###
+webbrowser.open('http://127.0.0.1:8000/cocktail/')
+time.sleep(5)
 while (True):
     ###  Select Mix Steps from DB ###
     msg = ""
@@ -20,7 +24,7 @@ while (True):
     cocktail_id = current_order[4]
     step = current_order[1]
     if (step == 0):
-        time.sleep(5)
+        #time.sleep(5)
         msg = '11 30000 '
 
         # msg = "1 "
@@ -56,23 +60,21 @@ while (True):
             ingredient = r[5]
             action = r[6]
             msg = ""
-            ### open current step in browser ###
-            webbrowser.open('http://127.0.0.1:8000/cocktail/')
             ### write corresponding message ###
             if (jar == 0 and action == 0):
             	msg = '5        ' # take glass
             elif (jar == 1 and action == 0):
             	msg = '6        ' # take shaker
             elif (jar == 0 and action == 1):
-            	msg = '7        ' # fill shaker in glass
+            	msg = '7  8000  ' # fill shaker in glass
             elif (action == 2):
-            	msg = '8        ' # skake
+            	msg = '8  10000 ' # skake
             elif (action == 3):
-            	msg = '9        ' # mix
+            	msg = '9  8000  ' # mix
             elif (action == 4):
-            	msg = '1        ' # finish
+            	msg = '12       ' # finish
             elif (ingredient == 13 and amount < 10): # ICE
-                msg = '10    ' + str(amount) + '     '
+                msg = '10 ' + str(amount) + '     '
             elif (ingredient == 13 and amount >= 10): # ICE
                 msg = '10 ' + str(amount) + '    '
             elif (ingredient >= 10 and amount < 10):
@@ -128,9 +130,12 @@ while (True):
             if (order_result):
                 cursor.execute("UPDATE cocktaildb_order SET step =" + str(step+1) + " WHERE id =" + str(current_order[0]) + ";")
                 connection.commit()
+                print("higher")
             else:
-                cursor.execute("UPDATE cocktaildb_order SET done = 1 WHERE id = " + str(current_order) + ";")
-                connection.commit
+                sql = "UPDATE cocktaildb_order SET done =1 WHERE id =" + str(current_order[0]) + ";" 
+                cursor.execute(sql)
+                connection.commit()
+                print("done: " + sql)
         elif ("TOUCHED" in answ):
             loop = False
             cursor.execute("UPDATE cocktaildb_order SET step = " + str(step+1) + " WHERE id =" + str(current_order[0]) + ";")
