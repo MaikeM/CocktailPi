@@ -221,7 +221,7 @@ void loop() {
       long current_weight = scale.get_units(1);
       if (current_weight < desired_weight) {
         fill_finished = false;
-        colorEverything(strip.Color(0,255,0));
+        colorEverythingExceptWeight(strip.Color(0,255,0));
         if (state == 2 || state == 3) {
           colorPosition(current_pos);
         }
@@ -307,7 +307,7 @@ void loop() {
         colorWeight(stripWeight.Color(0, 255, 0));
          if (!touched_flag) {
           touched_flag = true;
-          Serial.println("TOCUHED");
+          Serial.println("TOUCHED");
          }
       } 
     }
@@ -348,7 +348,13 @@ void colorEverything(uint32_t c) {
   colorBottom(c);
   colorWeight(c);
 }
-
+void colorEverythingExceptWeight(uint32_t c) {
+  colorAllPositions(c);
+  colorIce(c);
+  colorShaker(c);
+  colorGlass(c);
+  colorBottom(c);
+}
 
 void colorWeight(uint32_t c) {
   for (uint16_t i=0; i<stripWeight.numPixels(); i++) {
