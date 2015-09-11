@@ -4,16 +4,20 @@
             padding-bottom: 20px;x">
     <!--<div class="box-content">-->
     {% if cocktail = 0 %}
-        <p> <font color="#5A5A5A">There is no order. Please connect to "CocktailPi" and login with "CocktailPi". Then select your Cocktail. </font> </p>
+        <p> <font color="#5A5A5A"><h1>There is no order. Please connect to the WiFi "CocktailPi" with password "CocktailPi". Then select your Cocktail. </h1></font> </p>
     {% elif current_step = 0%}
         <p> <font color="#5A5A5A">
-            Current ID: {{current_id}} <br>
-            Please tap on the weight measuring module to start. </font> </p>
+            <h1>Current ID: <b>{{current_id}} </b></h1><br>
+            <h2>Please tap on the weight measuring module to start. </h2> <br>
+            <h2> Your cocktail will be removed from the queue if you wait longer than 30 seconds!</h2></font> </p>
     {% else %}
+     <h1>Current ID: <b>{{current_id}} </b></h1>
+      <h2>Please follow the steps displayed below:</h2><br>
+
     {% for step in mixsteps %}
         {% if step.step = current_step %}
 
-        <p> <font color="#5A5A5A">{{step}}</font> </p>
+        <p> <font color="#5A5A5A"><h2>{{step}}</h2></font> </p>
         {% else %}
         <p> <font color="#D8D8D8">{{step}}</font> </p>
         {% endif %}
