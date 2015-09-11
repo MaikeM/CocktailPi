@@ -142,6 +142,6 @@ while (True):
             connection.commit()
         elif ("NO_INPUT" in answ):
             cursor.execute("DELETE FROM cocktaildb_order WHERE id = " + str(current_order[0]) + ";")
-            connection.commit
+            connection.commit()
             loop = False
     print("loop break")
