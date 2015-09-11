@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 import random
-from .models import Cocktail, MixStep, Ingredient
+from .models import Cocktail, MixStep, Ingredient, Order
 
 # Create your views here.
 def index(request):
@@ -201,9 +201,10 @@ def ingredients(request):
 	return render(request, 'cocktaildb/ingredients.html', context)
 
 def mix(request, cocktail_id):
-	import subprocess
-	import os
-	print (os.getcwd())
-	print (cocktail_id)
-	subprocess.Popen(["python", "cocktaildb/communication.py" , "{}".format(cocktail_id)])
-	return redirect('cocktaildb:index')
+    order = Order()
+    order.cocktail_id = cocktail_id
+    order.save()
+    context = RequestContext(request, {
+        'order_id': order.id,
+    })
+    return render(request, 'cocktaildb/mix.html', context)

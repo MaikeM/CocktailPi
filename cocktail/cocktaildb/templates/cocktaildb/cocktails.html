@@ -5,8 +5,6 @@
 <div id="sidebar-left" class="span2">
     <div class="nav-collapse sidebar-nav">
         <ul class="nav nav-tabs nav-stacked main-menu">
-           <!-- <li><a href="index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a>
-            </li>-->
 			<li class="active"><a href="{% url 'cocktaildb:index'%}"><i class="icon-glass"></i><span class="hidden-tablet"> Select cocktail</span></a>
             </li>
             <li><a href="{% url 'cocktaildb:ingredients'%}"><i class="icon-tint"></i><span class="hidden-tablet"> Ingredients</span></a>
@@ -19,11 +17,6 @@
 
 {% block content %}
 <ul class="breadcrumb">
-    <!--<li>
-        <i class="icon-home"></i>
-        <a href="index.html">Home</a>
-        <i class="icon-angle-right"></i>
-    </li>-->
     <li><a href="#">Select Cocktail</a>
     </li>
 </ul>
@@ -31,16 +24,6 @@
 <div class="span10">
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
      <p>
-        <!--<form action="{% url 'cocktaildb:index' %}" method="post">
-            {% for choice in question.choice_set.all %}
-                <div class="actions">
-                    <input type="radio" name="cocktail" value="{{cocktail}}"/> <label for="{{ cocktail }}">{{ cocktail }}</label>
-                    <input type="radio" name="cocktail" value="cocktail"/> <label for="cocktail">cocktail</label>
-                </div>
-            {% endfor %}
-            {% csrf_token %}
-            <button class="btn btn-success" type="submit">Filter</button>
-        </form>-->
         <form action="{% url 'cocktaildb:index' %}" method="post">
             {% csrf_token %}
             <select name="cocktail">
@@ -117,13 +100,27 @@
 					{% endif %}
 					<br>
                     <br>
-                    <strong><font color="#111111">Status:</font></strong> <span class="label label-success">Available</span>
+                    <strong><font color="#111111">Status:</font></strong>  </br>
+                    {% for step in steps %}
+                        {% if cocktail == step.cocktail %}
+                            {% for ingredient in ingredients %}
+                                {% if step.ingredient == ingredient %}
+                                    {% if ingredient.amount > step.amount %}
+                                        <span class="label label-success">{{ingredient}} available
+                                        </span> </br>
+                                    {% else %}
+                                        <span class="label label-important">{{ingredient}} not available
+                                        </span> </br>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                 </p>
                 <p>
                     <br>
                 </p>
                 <p>
-                    <!--<form action="{% url 'cocktaildb:cocktail' cocktail.id 1 %}" method="post">-->
                     <form action="{% url 'cocktaildb:mix' cocktail.id %}" method="post">
                         <div class="actions">
                             <input type="hidden" name="id" value="12423">
