@@ -1,31 +1,3 @@
-% THIS IS SIGPROC-SP.TEX - VERSION 3.1
-% WORKS WITH V3.2SP OF ACM_PROC_ARTICLE-SP.CLS
-% APRIL 2009
-%
-% It is an example file showing how to use the 'acm_proc_article-sp.cls' V3.2SP
-% LaTeX2e document class file for Conference Proceedings submissions.
-% ----------------------------------------------------------------------------------------------------------------
-% This .tex file (and associated .cls V3.2SP) *DOES NOT* produce:
-%       1) The Permission Statement
-%       2) The Conference (location) Info information
-%       3) The Copyright Line with ACM data
-%       4) Page numbering
-% ---------------------------------------------------------------------------------------------------------------
-% It is an example which *does* use the .bib file (from which the .bbl file
-% is produced).
-% REMEMBER HOWEVER: After having produced the .bbl file,
-% and prior to final submission,
-% you need to 'insert'  your .bbl file into your source .tex file so as to provide
-% ONE 'self-contained' source file.
-%
-% Questions regarding SIGS should be sent to
-% Adrienne Griscti ---> griscti@acm.org
-%
-% Questions/suggestions regarding the guidelines, .tex and .cls files, etc. to
-% Gerald Murray ---> murray@hq.acm.org
-%
-% For tracking purposes - this is V3.1SP - APRIL 2009
-
 \documentclass{acm_proc_article-sp}
 \usepackage{caption}
 \usepackage{listings}
@@ -34,100 +6,24 @@
 \begin{document}
 
 \title{Bar Dude \\ An Interactive Bar}
-%\subtitle{[Extended Abstract]
-%\titlenote{A full version of this paper is available as
-%\textit{Author's Guide to Preparing ACM SIG Proceedings Using
-%\LaTeX$2_\epsilon$\ and BibTeX} at
-%\texttt{www.acm.org/eaddress.htm}}}
-%
-% You need the command \numberofauthors to handle the 'placement
-% and alignment' of the authors beneath the title.
-%
-% For aesthetic reasons, we recommend 'three authors at a time'
-% i.e. three 'name/affiliation blocks' be placed beneath the title.
-%
-% NOTE: You are NOT restricted in how many 'rows' of
-% "name/affiliations" may appear. We just ask that you restrict
-% the number of 'columns' to three.
-%
-% Because of the available 'opening page real-estate'
-% we ask you to refrain from putting more than six authors
-% (two rows with three columns) beneath the article title.
-% More than six makes the first-page appear very cluttered indeed.
-%
-% Use the \alignauthor commands to handle the names
-% and affiliations for an 'aesthetic maximum' of six authors.
-% Add names, affiliations, addresses for
-% the seventh etc. author(s) as the argument for the
-% \additionalauthors command.
-% These 'additional authors' will be output/set for you
-% without further effort on your part as the last section in
-% the body of your article BEFORE References or any Appendices.
 
-\numberofauthors{4} %  in this sample file, there are a *total*
-% of EIGHT authors. SIX appear on the 'first-page' (for formatting
-% reasons) and the remaining two appear in the \additionalauthors section.
-%
+\numberofauthors{4} 
 \author{
-% You can go ahead and credit any number of authors here,
-% e.g. one 'row of three' or two rows (consisting of one row of three
-% and a second row of one, two or three).
-%
-% The command \alignauthor (no curly braces needed) should
-% precede each author name, affiliation/snail-mail address and
-% e-mail address. Additionally, tag each line of
-% affiliation/address with \affaddr, and tag the
-% e-mail address with \email.
-%
-% 1st. author
 \alignauthor
 Nicolas Erbach\\
-       %\affaddr{1932 Wallamaloo Lane}\\
-       %\affaddr{Wallamaloo, New Zealand}\\
        \email{s9nierba@stud.uni-saarland.de}
-% 2nd. author
 \alignauthor
 Tobias Kiefer\\
-       %\affaddr{Institute for Clarity in Documentation}\\
-       %\affaddr{P.O. Box 1212}\\
-       %\affaddr{Dublin, Ohio 43017-6221}\\
        \email{s9tskief@stud.uni-saarland.de}
-% 3rd. author
+\and
 \alignauthor Maike Maas\\
-      % \affaddr{The Th{\o}rv{\"a}ld Group}\\
-      % \affaddr{1 Th{\o}rv{\"a}ld Circle}\\
-       % \affaddr{Hekla, Iceland}\\
        \email{s9memaas@stud.uni-saarland.de}
-\and  % use '\and' if you need 'another row' of author names
-% 4th. author
 \alignauthor Manuel Zapp\\
-       %\affaddr{Brookhaven Laboratories}\\
-       %\affaddr{Brookhaven National Lab}\\
-       %\affaddr{P.O. Box 5000}\\
        \email{s9mazapp@stud.uni-saarland.de}
 }
-% There's nothing stopping you putting the seventh, eighth, etc.
-% author on the opening page (as the 'third row') but we ask,
-% for aesthetic reasons that you place these 'additional authors'
-% in the \additional authors block, viz.
-%\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
-%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
-%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
 \date{25 September 2015}
-% Just remember to make sure that the TOTAL number of authors
-% is the number that will appear on the first page PLUS the
-% number that will appear in the \additionalauthors section.
 
 \maketitle
-
-% A category with the (minimum) three required fields
-%\category{H.4}{Information Systems Applications}{Miscellaneous}
-%A category including the fourth, optional field follows...
-%\category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
-
-%\terms{Theory}
-
-%\keywords{ACM proceedings, \LaTeX, text tagging} % NOT required for Proceedings
 
 \section{Introduction}
 The seminar "Affective Lighting" aims to bring together the field of affective computing and interactive lighting to create environmental responsive lighting experiences for future smart environments. The goal was to the design and development of systems and devices that can recognize, interpret, and process human affects to adapt the lighting environment accordingly. As a solution to this task we want to present "Bar Dude"  the interactive bar, which is a lighting solutions that helps users to mix cocktails in an easy and understandable way.
@@ -225,7 +121,7 @@ The initial design planed that the two shelves only consisted of two full pelxig
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
-   \includegraphics[width=0.5\linewidth]{pictures/illuminated_shelves.jpg}}
+   \includegraphics[width=0.6\linewidth]{pictures/illuminated_shelves.jpg}}
 \captionof{figure}{Illumination of the shelves}\label{fig:illuminated_shelves}%      only if needed  
 \end{minipage}
 
@@ -236,29 +132,27 @@ Figure \ref{fig:illuminated_shelves} shows who one bottle in bar can be lighted 
 \subsection{Soldering and Wiring}
 Finally we needed to connect all electronic parts together. The Raspberry Pi and the Arduino Uno are connected via an standard USB cable. Both have an individual 5 Volt power adapter with 1.2 Ampere for both devices. We have 5 LED stripes: One for both shelves, one for the glasses, one for the shaker and the ice, one for the glass panel above the scale and one for floor illumination. Each stripe needs three connections, one to ground, one to 5 Volt and one data connection to a digital pin the Arduino board. The scale is connected to a weighting module which is also connected to ground and 5 Volt and additional to 2 analog inputs on the Arduino board.
 
-\begin{figure}[htbp] 
-  \centering
-     \includegraphics[width=1\linewidth]{pictures/sketch.pdf}
-  \caption{Wiring sketch of the bar. The power adapters are not depicted. Made with Fritzing.}
+
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+     \includegraphics[width=0.8\linewidth]{pictures/sketch.pdf}}
+  \captionof{figure}{Wiring sketch of the bar. The power adapters are not depicted. Made with Fritzing.}
   \label{fig:fritzing}
-\end{figure}
+\end{minipage}
 
 All cables are equipped with plugs for easier assembling. For the LED stripes they were neccesary as the stripes doesn't fit through the drill holes. The cables from the stripes and the weighting module are all plugged into a self-soldered circuit board, which itself connects to the Arduino with only 3 plugs. 
 
-\begin{figure}[htbp] 
-  \centering
-     \includegraphics[width=1\linewidth]{pictures/built_in_electronic.JPG}
-  \caption{View from below: On the top left is the weighting module. On the bottom left is the circuit board where all LED stripes and the weighting module are connected to and which connects to the Arduino on the right.}
-  \label{fig:viewfrombelow}
-\end{figure}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics[width=0.8\linewidth]{pictures/built_in_electronic.JPG}}
+\captionof{figure}{View from below: On the top left is the weighting module. On the bottom left is the circuit board where all LED stripes and the weighting module are connected to and which connects to the Arduino on the right}\label{fig:viewfrombelow}%      only if needed  
+\end{minipage}
 
-
-\begin{figure}[htbp] 
-  \centering
-     \includegraphics[width=1\linewidth]{pictures/wiring.jpg}
-  \caption{The circuit board during the soldering process}
-  \label{fig:soldering}
-\end{figure}
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+     \includegraphics[width=0.7\linewidth]{pictures/wiring.jpg}}
+\captionof{figure}{The circuit board during the soldering process}\label{fig:soldering}%      only if needed  
+\end{minipage}
 
 
 
@@ -276,7 +170,7 @@ To create tables in Django, models are used. A model declares the column names, 
 While the server is running we can access '127.0.0.1/admin/' to enter entries into the created tables. We also could to this with normal SQL commands. Now we can select the table and add new entries (Figure \ref{fig:db_entry}). \\
 \begin{figure}[htbp] 
  \centering
-    \includegraphics[width=0.7\linewidth]{pictures/db_insert_entry.png}
+    \includegraphics[width=0.8\linewidth]{pictures/db_insert_entry.png}
  \caption{Insert a new cocktail}
  \label{fig:db_entry}
 \end{figure}
