@@ -252,13 +252,17 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 
 \section{Software Construction}
 \subsection{Raspberry Pi and Arduino}
-\subsection{Webserver}
+\subsection{Webserver}\label{sec:webserver}
 \subsection{Database}
 \subsection{Communication}
 \section{User Guide}
 \subsection{Start the System}
-\subsection{Select a Cocktail}
-\subsection{Mix the Cocktail}
+To start the system you just need to connect the bar to the power supply system. After that the Raspberry Pi boots and when the 'Bar Dude' website is displayed, you can start ordering your cocktails.
+ \subsection{Select a Cocktail}
+You have to connect to the Access Point 'CocktailPi' and log in with the password 'CocktailPi'. Then go to '192.168.0.1' in your browser. Now you can see the interface where you can choose your cocktail. For more information about the website read section \ref{sec:webserver}. You choose your cocktail by clicking on the corresponding 'Do it dude!' button. You get a number to know which cocktail is your's.
+ \subsection{Mix the Cocktail}
+When your number is displayed on the display of the Raspberry Pi, you have 30 seconds to touch the weight measuring module. It also displays the countdown. If the time runs out, the order is deleted and the next cocktail number is displayed. \\
+Now you can follow the instructions of the display. First you have to take a glass or a shaker depending on which is illuminated and put it on the weight measuring module. Then you add the illuminated ingredients. The weight measuring module shows you which amount if the ingredient is needed. It changes the color from red to green and the speed of the illumination slows down until you fill in enough. If you use a shaker you have to shake it when the bar goes wild. Then you have to take a glass and fill the content of the shaker into the glass. If you take a glass at first, you normally, not always, have to mix your cocktail. In this case the weight measuring module displays a circle. Take a spoon and mix until the next step is displayed. When your cocktail is finished, a party mode is displayed. 
 
 
 \section{Conclusions}
