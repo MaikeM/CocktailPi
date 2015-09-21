@@ -246,6 +246,10 @@ After polishing and cleaning the rack with compressed air, we were able to prime
 
 
 \subsection{Soldering and Wiring}
+Finally we needed to connect all electronic parts together. The Raspberry Pi and the Arduino Uno are connected via an standard USB cable. Both have an individual 5 Volt power adapter with 1.2 Ampere for the Arduino and ? Ampere for the Raspberry Pi. We have 5 LED stripes: One for both shelves, one for the glasses, one for the shaker and the ice, one for the glass panel above the scale and one for floor illumination. Each stripe needs three connections, one to ground, one to 5 Volt and one data connection to a digital pin the Arduino board. The scale is connected to a weighting module which is also connected to ground and 5 Volt and additional to 2 analog inputs on the Arduino board.
+
+All cables are equipped with plugs for easier assembling. For the LED stripes they were neccesary as the stripes doesn't fit through the drill holes. The cables from the stripes and the weighting module are all plugged into a circuit board, which itself connects to the Arduino with only 3 plugs. 
+
 \section{Software Construction}
 \subsection{Raspberry Pi and Arduino}
 \subsection{Webserver}
