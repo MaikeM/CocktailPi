@@ -1,0 +1,4 @@
+TODO:
+- Gläser illuminiern wenn von Shaker in Glas gefüllt wird
+- 192.168.0.1 als Startseite wenn man sich ins WLAN einloggt
+- Conclusion + Webserver schreiben
