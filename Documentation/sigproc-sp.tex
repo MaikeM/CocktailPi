@@ -253,6 +253,22 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 \end{figure}
 
 
+\begin{figure}[htbp] 
+  \centering
+     \includegraphics[width=0.5\linewidth]{pictures/wiring.jpg}
+  \caption{Wiring everything on a circuit board}
+  \label{fig:fritzing}
+\end{figure}
+
+\begin{figure}[htbp] 
+  \centering
+     \includegraphics[width=0.5\linewidth]{pictures/built_in_electronic.jpg}
+  \caption{Built everything in the bar}
+  \label{fig:fritzing}
+\end{figure}
+
+
+
 \section{Software Construction}
 \subsection{Raspberry Pi and Arduino}
 \subsection{Webserver}\label{sec:webserver}
@@ -282,7 +298,7 @@ The Arduino always send an answer which can either be the message it received, '
 To start the system you just need to connect the bar to the power supply system. After that the Raspberry Pi boots and when the 'Bar Dude' website is displayed, you can start ordering your cocktails. \\
 To initialize the system you have to enter the current amount of each ingredient. After connecting to 'CocktailPi' discribed in the next subsection go to '192.168.0.1/admin/' and log in with 'admin' and 'ubercocktail'. Then select 'Ingredients' and edit the amount. You also should do this when you replace a bottle.
  \subsection{Select a Cocktail}
-You have to connect to the Access Point 'CocktailPi' and log in with the password 'CocktailPi'. Then go to '192.168.0.1' in your browser. Now you can see the interface where you can choose your cocktail. For more information about the website read section \ref{sec:webserver}. You choose your cocktail by clicking on the corresponding 'Do it dude!' button. You get a number to know which cocktail is your's.
+You have to connect to the Access Point 'CocktailPi' and log in with the password 'CocktailPi'. Then go to '192.168.0.1' in your browser. Now you can see the interface where you can choose your cocktail, which you can see in figure \ref{fig:select_cocktail}. For more information about the website read section \ref{sec:webserver}. You choose your cocktail by clicking on the corresponding 'Do it dude!' button. You get a number to know which cocktail is your's.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -296,6 +312,12 @@ Now you can follow the instructions of the display. First you have to take a gla
 
 
 \section{Conclusions}
+
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+   \includegraphics[width=0.5\linewidth, angle =270]{pictures/bar.jpg}}
+\captionof{figure}{Finished bar}\label{fig:bar}%      only if needed  
+\end{minipage}
 %This paragraph will end the body of this sample document.
 %Remember that you might still have Acknowledgments or
 %Appendices; brief samples of these
