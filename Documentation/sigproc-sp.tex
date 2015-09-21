@@ -28,6 +28,8 @@
 
 \documentclass{acm_proc_article-sp}
 \usepackage{caption}
+\usepackage{listings}
+
 
 \begin{document}
 
@@ -257,7 +259,23 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 \section{Software Construction}
 \subsection{Raspberry Pi and Arduino}
 \subsection{Webserver}\label{sec:webserver}
+
 \subsection{Database}
+We used internal Django interface to build the database. For development, we used SQLite3 and later on we switched to MySQL because SQLite3 cannot handle multiple accesses to the database. Because we use Django it is very easy to switch. All tables are saved as models and we only need to create the internal database. Django is also able to import the data from SQLite3 into MySQL. \\
+To create tables in Django, models are used. A model declares the column names, the corresponding types and constrains. Then Django need to migrate the database with the following commands:
+\begin{lstlisting}[language=bash]
+ $ python manage.py makemigrations
+ $ python manage.py migrate
+\end{lstlisting}
+While the server is running we can access '127.0.0.1/admin/' to enter entries into the created tables. We also could to this with normal SQL commands. Now we can select the table and add new entries (Figure \ref{fig:db_entry}). \\
+\begin{figure}[htbp] 
+ \centering
+    \includegraphics[width=0.7\linewidth]{pictures/db_insert_entry.png}
+ \caption{Insert a new cocktail}
+ \label{fig:db_entry}
+\end{figure}
+Django can handle all kinds of requests so that we do not need the normal SQL statements to ask for entries.
+
 \subsection{Communication}
 \section{User Guide}
 \subsection{Start the System}
