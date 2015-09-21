@@ -139,7 +139,7 @@ The idea behind Bar Dude is a cocktail bar that guides people through the single
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
-  \includegraphics[width=0.5\linewidth]{pictures/bar_inventor.png}}
+\includegraphics[width=0.5\linewidth]{pictures/bar_inventor.png}}
 \captionof{figure}{Sketch of the bar}\label{fig:bar_inventor}%      only if needed  
 \end{minipage}
 
@@ -264,6 +264,28 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 
 \section{Software Construction}
 \subsection{Raspberry Pi and Arduino}
+We developped a simple numbers based communication protocol between the Raspberry Pi and the Arduino. After starting the Arduino it waits for a message consisting of 9 characters. If the size is incorrect it will respond with \textit{ERRROR} to the Raspberry. If the message has the correct length it will first send back the received message for checking by the arduino and then execute the command that was encoded in the meassage. The first 3 charcaters denode the mode that will be chosen, by converting the charcters one by one to a number until a non numeric character appears. In the following we denode non numeric charcters with a \texttt{.} Possible commands are:
+
+\begin{itemize}
+\item \texttt{0.. ... ...} switches all lights off.
+\item \texttt{1.. ... ...} enables the so called \textit{partz mode} until an other command arrives
+\item \texttt{2.. ppp www} enables the \textit{whole weight meassuring mode}, where postion $ p $ will be illuminated until the scale has the weight $w$ grams and then sends \textit{READY} to the Raspberry Pi. \textit{This was used for debugging purposes only.}
+\item \texttt{3.. ppp www} enables the \textit{added weight measuring mode}, where position $ p $ will be illuminated until  $w$ grams have been added to the weight that is measured when issuing the command and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{4.. ... ...} returns the current weight in grams over the serial connection. \textit{This was used for debugging purposes only.}
+\item \texttt{5.. ... ...} illuminates the glasses until one is placed on the scale and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{6.. ... ...} illuminates the shaker until it is placed on the scale and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{7.. ... ...} illuminates the glasses and waits until one is taken, placed on the scale and filled with the content of the shaker and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{8.. ttt ttt} illuminates the bar  for $t$ milliseconds in a way that inspires the user to shake the shaker, waits until the shaker is placed on the scale again and then sends \textit{READY} to the Raspberry Pi. 
+\item \texttt{9.. ttt ttt} illuminates the bar for $t$ milliseconds in a way that inspires the user to stir his drink with a spoon and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{11. ttt ttt} waits for $t$ milliseconds that the user touches the scale. I fthe user touched the scale the Arduino sends {TOUCHED} to the Raspberry Pi, else it will send .\textit{NO?INPUT}
+\item \texttt{12. ... ...} measures the current weight and will display the \textit{party mode} until the weight from the scale is removed.
+
+\end{itemize}
+
+Any other command number will trigger the \textit{error mode}, which causes the whole bar to blink in red.
+
+
+
 \subsection{Webserver}\label{sec:webserver}
 
 \subsection{Database}
