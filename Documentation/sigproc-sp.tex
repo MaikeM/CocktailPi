@@ -275,6 +275,13 @@ To start the system you just need to connect the bar to the power supply system.
 To initialize the system you have to enter the current amount of each ingredient. After connecting to 'CocktailPi' discribed in the next subsection go to '192.168.0.1/admin/' and log in with 'admin' and 'ubercocktail'. Then select 'Ingredients' and edit the amount. You also should do this when you replace a bottle.
  \subsection{Select a Cocktail}
 You have to connect to the Access Point 'CocktailPi' and log in with the password 'CocktailPi'. Then go to '192.168.0.1' in your browser. Now you can see the interface where you can choose your cocktail. For more information about the website read section \ref{sec:webserver}. You choose your cocktail by clicking on the corresponding 'Do it dude!' button. You get a number to know which cocktail is your's.
+
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics[width=0.8\linewidth]{pictures/select_cocktail.png}}
+\captionof{figure}{Selection of a Cocktail}\label{fig:select_cocktail}%      only if needed  
+\end{minipage}
+
  \subsection{Mix the Cocktail}
 When your number is displayed on the display of the Raspberry Pi, you have 30 seconds to touch the weight measuring module. It also displays the countdown. If the time runs out, the order is deleted and the next cocktail number is displayed. \\
 Now you can follow the instructions of the display. First you have to take a glass or a shaker depending on which is illuminated and put it on the weight measuring module. Then you add the illuminated ingredients. The weight measuring module shows you which amount if the ingredient is needed. It changes the color from red to green and the speed of the illumination slows down until you fill in enough. If you use a shaker you have to shake it when the bar goes wild. Then you have to take a glass and fill the content of the shaker into the glass. If you take a glass at first, you normally, not always, have to mix your cocktail. In this case the weight measuring module displays a circle. Take a spoon and mix until the next step is displayed. When your cocktail is finished, a party mode is displayed. 
