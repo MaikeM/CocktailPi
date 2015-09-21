@@ -119,25 +119,6 @@ Tobias Kiefer\\
 % number that will appear in the \additionalauthors section.
 
 \maketitle
-\begin{abstract}
-%This paper provides a sample of a \LaTeX\ document which conforms to
-%the formatting guidelines for ACM SIG Proceedings.
-%It complements the document \textit{Author's Guide to Preparing
-%ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}. This
-%source file has been written with the intention of being
-%compiled under \LaTeX$2_\epsilon$\ and BibTeX.
-%
-%The developers have tried to include every imaginable sort
-%of ``bells and whistles", such as a subtitle, footnotes on
-%title, subtitle and authors, as well as in the text, and
-%every optional component (e.g. Acknowledgments, Additional
-%Authors, Appendices), not to mention examples of
-%equations, theorems, tables and figures.
-%
-%To make best use of this sample document, run it through \LaTeX\
-%and BibTeX, and compare this source code with the printed
-%output produced by the dvi file.
-\end{abstract}
 
 % A category with the (minimum) three required fields
 %\category{H.4}{Information Systems Applications}{Miscellaneous}
@@ -162,16 +143,18 @@ The idea behind Bar Dude is a cocktail bar that guides people through the single
 \captionof{figure}{Sketch of the bar}\label{fig:bar_inventor}%      only if needed  
 \end{minipage}
 
-In our approach we planed a bar with Adobe Inventor, which was designed with two plexiglass shelves each with room for six bottles. Under the lowermost shelf we planed to place the cocktail glasses, the ice bucket and the cocktail shaker. Behind the pelxiglass shelves we arranged LED strips, which made it possible to illuminated each bottle on its own.
+In our approach we planed a bar with Adobe Inventor, which was designed with two plexiglass shelves each with room for six bottles. Under the lowermost shelf we planed to place the cocktail glasses, the ice bucket and the cocktail shaker. Behind the plexiglass shelves we arranged LED strips, which made it possible to illuminated each bottle on its own.
 In the bottom plate of the bar, which consists of two plates with a cavity between them, we integrated a weight measuring module, so that the bar is able to know how much of each ingredient the user already filled in the glass. To do so the bar uses LED strips under the weight module to give exacted feedback.  
 Furthermore the cavity of the bottom plate made it possible to stow all electronics inside the bar so that the user does not see any wiring unless the raspberry pi surface. On this surface we wanted to give little instructions for each step in the mixing process of the selected cocktail.
 
 \begin{figure}[htbp] 
   \centering
      \includegraphics[width=0.7\linewidth]{pictures/technical.png}
-  \caption{Technical specification}
+  \caption{Technical sketch}
   \label{fig:technical}
 \end{figure}
+
+In the first technical sketch we used a Raspberry Pi creating a WiFi network and running a web server providing the website of the bar. This Raspberry Pi was connected via a serial connection over a USB cable to a Arduino Uno. To this micro controller we wanted to connect the LED strips and the weight measuring module.
 
 \section{Hardware Construction}
 \subsection{Woodwork}
