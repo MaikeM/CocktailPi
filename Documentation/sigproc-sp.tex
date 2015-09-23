@@ -41,10 +41,23 @@ With the enormous amount of different cocktails it is unfeasible for non-bartend
 \captionof{figure}{Sketch of the bar}\label{fig:bar_inventor}%      only if needed  
 \end{minipage}
 
-In our approach we planed a bar with Adobe Inventor, which was designed with two plexiglass shelves each with room for six bottles. Under the lowermost shelf we planed to place the cocktail glasses, the ice bucket and the cocktail shaker. Behind the plexiglass shelves we arranged LED strips, which made it possible to illuminated each bottle on its own.
-In the bottom plate of the bar, which consists of two plates with a cavity between them, we integrated a weight measuring module, so that the bar is able to know how much of each ingredient the user already filled in the glass. To do so the bar uses LED strips under the weight module to give exacted feedback.  
-Furthermore the cavity of the bottom plate made it possible to stow all electronics inside the bar so that the user does not see any wiring unless the raspberry pi surface. On this surface we wanted to give little instructions for each step in the mixing process of the selected cocktail.
+In a first step we planed the shape of the bar using Adobe Inventor as shown in figure \ref{fig:bar_inventor}. One of our goals was to provide as many cocktails as possible with least ingredients. Regarding our calculations twelve ingredients is the best trade-off and gave us circa 50 different cocktails. This is why we designed it with two plexiglass shelves each with room for six bottles. Under the lowermost shelf we planed to place the cocktail glasses, the ice bucket and the cocktail shaker. LED strips should be used to illuminate the ingredients and should be arranged properly behind the plexiglass shelves. This should allow the independent illumination of each bottle. In the bottom plate of the bar, which consists of two plates with a cavity between them, a weight measuring module should be integrated so that the system is able to measure the actual amount of liquid that is already filled in the glass. To give the user visual feedback about how much liquid has to be filled in, LED strips are also placed under the weight measuring module. Furthermore the cavity of the bottom plate makes it possible to stow all electronics inside the bar so that the user does not see any wiring unless the raspberry pi surface. On this surface we want to give little instructions for each step in the mixing process of the selected cocktail.
 
+Our shopping list looks as follows:
+\begin{itemize}
+\item Raspberry Pi 2 B
+\item Raspberry LCD Display
+\item Power supply for Raspberry Pi
+\item SD-card for Raspberry Pi
+\item WLAN adapter for Raspberry Pi
+\item weight measuring module
+\item Arduino Uno
+\item Power supply for Arduino Uno
+\item Adafruit Neopixel 120 LED
+\item Plexiglass
+\item Wood
+\item USB cable for connection between Raspberry Pi and Arduino
+\end{itemize}
 \begin{figure}[htbp] 
   \centering
      \includegraphics[width=0.7\linewidth]{pictures/technical.png}
@@ -52,9 +65,11 @@ Furthermore the cavity of the bottom plate made it possible to stow all electron
   \label{fig:technical}
 \end{figure}
 
-In the first technical sketch we used a Raspberry Pi creating a WiFi network and running a web server providing the website of the bar. This Raspberry Pi was connected via a serial connection over a USB cable to a Arduino Uno. To this micro controller we wanted to connect the LED strips and the weight measuring module.
+In the first technical sketch we used a Raspberry Pi spanning a WiFi network and running a web server providing the user interface of the bar. This Raspberry Pi is connected via a serial connection over a USB cable to a Arduino Uno. To this micro controller the LED strips and the weight measuring module are connected.
 
 \section{Hardware Construction}
+In this section we explain the hardware construction process. In the first part a detailed description of the woodwork is given. After that the design and realisation of the plexiglass shelves is stated.
+
 \subsection{Woodwork}
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
@@ -64,7 +79,7 @@ In the first technical sketch we used a Raspberry Pi creating a WiFi network and
 \end{minipage}
 
 
-After planning the rack and the shelves of the bar, we calculated the amount of wood we would need to build it. In a next step we had to cut the wood we bought into the right pieces. For the rounding of the rack bottom we contacted a local carpenter since we did not have the right instruments for doing this difficult cuts properly. The other small pieces were cut with a buzz saw as you can see in figure \ref{fig:cutting_wood}.
+After planning the rack and the shelves of the bar, we calculated the amount of wood we would need to build it. In a next step we had to cut the wood we bought into the right pieces. For the rounding of the rack bottom we contacted a local carpenter who did the difficult rounding cuts using a cnc mill. The other small pieces were cut with a buzz saw as you can see in figure \ref{fig:cutting_wood}.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -72,7 +87,7 @@ After planning the rack and the shelves of the bar, we calculated the amount of 
 \captionof{figure}{Assembling of the rack}\label{fig:assembling}%      only if needed  
 \end{minipage}
 
-When all pieces of the rack were fitted, we started to assemble the rack. Therefore we used screws and wood glue so that the bar would keep stable. Figure \ref{fig:assembling} shows how the base plate is screwed together.
+When all pieces of the rack were fitted, we started to assemble the rack. For assembly we used screws and wood glue so that the bar would keep stable. Figure \ref{fig:assembling} shows how the base plate is screwed together.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -81,7 +96,7 @@ When all pieces of the rack were fitted, we started to assemble the rack. Theref
 \end{minipage}
 
 
-The finished framing of the rack is shown in figure \ref{fig:framing}. This picture also illustrates that we did the panelling between the two base plates with 4 mm poplar wood because this is to thin and flexible that it can be bend.
+The finished framing of the rack is shown in figure \ref{fig:framing}. This picture also illustrates that we did the panelling between the two base plates with 4 mm poplar wood because this is thin and flexible that it can be bend.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -90,7 +105,7 @@ The finished framing of the rack is shown in figure \ref{fig:framing}. This pict
 \end{minipage}
 
 
-For deriving a smooth surface of the rack, we filled all screw wholes with filler. Since we used plywood, we also filled the edges of the rack, so that it is easier to prime and paint the bar. 
+For deriving a smooth surface of the rack, we filled all screw wholes with filling paste. Since we used chipboard, we also filled the edges of the rack, so that it is easier to prime and paint the bar. 
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -99,7 +114,7 @@ For deriving a smooth surface of the rack, we filled all screw wholes with fille
 \end{minipage}
 
 
-In a next step we polished the bar since had to remove the needless filler and roughen the wood. This work step can be seen in figure \ref{fig:polishing}
+In a next step we polished the bar since we had to remove the superfluous filling paste and roughened the wood. This work step can be seen in figure \ref{fig:polishing}
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -108,7 +123,7 @@ In a next step we polished the bar since had to remove the needless filler and r
 \end{minipage}
  
 
-After polishing and cleaning the rack with compressed air, we were able to prime the rack. This is important since primer creates a smooth and consistent layer for the paint.
+After polishing and cleaning the rack with compressed air, we were able to prime the rack. This is important since primer creates a smooth and consistent layer for the painting.
 
 
 \subsection{Plexiglass Shelves}
@@ -159,6 +174,8 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 
 
 \section{Software Construction}
+In this section the used electronic parts are described. Furthermore a illustration of the used software parts like the web server, user interface, database and the communication between the raspberry pi and arduino is given.
+
 \subsection{Raspberry Pi and Arduino}
 We use a Raspberry Pi 2 Model B. We installed raspain as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar.
 
@@ -218,6 +235,7 @@ We developped a simple numbers based communication protocol between the Raspberr
 Any other command number will trigger the \textit{error mode}, which causes the whole bar to blink in red.
 
 \section{User Guide}
+In this section a overview of how to use the system is given.
 \subsection{Start the System}
 To start the system you just need to connect the bar to the power supply system. After that the Raspberry Pi boots and when the 'Bar Dude' website is displayed, you can start ordering your cocktails. \\
 To initialize the system you have to enter the current amount of each ingredient. After connecting to 'CocktailPi' discribed in the next subsection go to '192.168.0.1/admin/' and log in with 'admin' and 'ubercocktail'. Then select 'Ingredients' and edit the amount. You also should do this when you replace a bottle.
