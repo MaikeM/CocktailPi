@@ -162,13 +162,18 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 \subsection{Raspberry Pi and Arduino}
 We use a Raspberry Pi 2 Model B. We installed raspain as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar.
 
-The Arduino is an Arduino Uno rev3. It's a microcontroller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
+The Arduino is an Arduino Uno rev3. It's a micro controller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
  
+\subsection{User Interface}
+The user interface that is implemented for the system is designed as a web page. We based our interface on the free Bootstrap admin template "Metro". The interface provides the ability to view and filter all possible cocktails that can be mixed using "Bar Dude". Additionally information about the cocktails are displayed: cocktails are classified into four groups 'virgin', 'softy', 'pimp' and 'dude' consecutively ordered on their amount of alcohol. Furthermore information about the availability is displayed. The availability status is computed out of the availability of the different ingredients. \\
+A button in each cocktail box is displayed and can be clicked to order the corresponding cocktail.
 
-\subsection{Webserver}\label{sec:webserver}
-We use \textit{Apache} as web server that will serve the static content of the page, scripts and images. Via \textit{mod\_wsgi} Apache connects to Django. mod\_wsgi is an Apache module that can run Python apllication which supports Python WSGI (Web Server Gateway Interface).
+\subsection{Web server}\label{sec:web server}
+We use \textit{Apache} as web server that will serve the static content of the page, scripts and images. Via \textit{mod\_wsgi} Apache connects to Django. mod\_wsgi is an Apache module that can run Python application which supports Python WSGI (Web Server Gateway Interface).
 
 As Web Framework we use \textit{Django}. Django is Python based and uses a model/view/presenter schema. Django will receive the requested URL from Apache, then it will aggregate all information and data that are needed for the request and pass them to a HTML template, where the data is inserted and the final HTML is created, which Apache will serve to the user.
+
+
 
 \subsection{Database}
 We used internal Django interface to build the database. For development, we used SQLite3 and later on we switched to MySQL because SQLite3 cannot handle multiple accesses to the database. Because we use Django it is very easy to switch. All tables are saved as models and we only need to create the internal database. Django is also able to import the data from SQLite3 into MySQL. \\
