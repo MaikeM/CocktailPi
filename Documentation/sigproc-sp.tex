@@ -5,7 +5,7 @@
 
 \begin{document}
 
-\title{Bar Dude \\ An Interactive Bar}
+\title{"Bar Dude" \\ An Interactive Bar}
 
 \numberofauthors{4} 
 \author{
@@ -26,12 +26,14 @@ Tobias Kiefer\\
 \maketitle
 
 \section{Introduction}
-The seminar "Affective Lighting" aims to bring together the field of affective computing and interactive lighting to create environmental responsive lighting experiences for future smart environments. The goal was to the design and development of systems and devices that can recognize, interpret, and process human affects to adapt the lighting environment accordingly. As a solution to this task we want to present "Bar Dude"  the interactive bar, which is a lighting solutions that helps users to mix cocktails in an easy and understandable way.
+With the upcoming LED technology and its numerous advantages, new possibilities especially for the maker scene emerged. Due to their low costs LEDs are affordable for nearly all DIY projects. Their low energy consumption and low operation voltage make them easily accessible also for non electronic experts with micro controller boards like the Arduino.\\
+In the seminar "Affective Lighting" the participants are encouraged to build their own project by combining interactive LED lighting and affective computing to create environmental responsive lighting experiences for future smart environments. The goal is the design and development of a system or devices that can recognize, interpret, and process human affects to adapt the lighting environment accordingly. The whole seminar is organized as an hackathon in teams of usually four person. This document guides the reader throughout the creation process of "Bar Dude" an interactive bar. "Bar Dude" is a system that uses different light signals to lead a user through the mixing procedure of the selected cocktail.
 
 \section{Concept}
+In this section we describe the thought process from the rough idea of a interactive bar using LED technology over our design phase till a concrete plan of "Bar Dude" an interactive bar.
 \subsection{Idea}
-The idea behind Bar Dude is a cocktail bar that guides people through the single steps of mixing their favourite cocktails. In a first step you are able to choose a cocktail on the website of the bar by connecting to it with your smart phone or laptop. In a second step it supports each client by illuminating the ingredients of the cocktail he or she selected step by step and by giving clear advice when you put enough of the single ingredients into the cocktail.
-\subsection{Approach}
+With the enormous amount of different cocktails it is unfeasible for non-bartenders to know how to mix every cocktail properly. "Bar Dude" addresses this problem by guiding people through the single steps of mixing their favourite cocktails. In a first step users are able to choose a cocktail from a proper interface. In a second step the user is advised to perform different action of the mixing procedure by illuminating the ingredients of the cocktail or displaying various light animations.
+\subsection{Design}
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -229,12 +231,21 @@ Now you can follow the instructions of the display. First you have to take a gla
 
 
 \section{Conclusions}
+We built a system called "Bar Dude" that combines interactive lighting elements with affective computing to guide users of the system throughout the mixing procedure of an arbitrary cocktail. Whereby we fulfilled the requirements of the seminar "Affective Lighting". \\
+"Bar Dude" allows a user to select a cocktail out of a selection of circa 50 different ones via a provided web application. The system assigns an ID to the user and asks him to go to the bar. There he or she can follow the self explaining advices given via light signals, such that a user with no prior knowledge of bartending can mix a cocktail. \\
+In our first field tests "Bar Dude" performed quite good. At a small to medium party or an event where an hired bartender is not affordable, but one nevertheless wants to serve cocktails to his guests "Bar Dude" is a good and keen alternative.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
    \includegraphics[width=0.5\linewidth, angle =270]{pictures/bar.jpg}}
 \captionof{figure}{Finished bar}\label{fig:bar}%      only if needed  
 \end{minipage}
+
+\section{Future Work}
+Apart from our initial idea the system could be extended to a bartender school. That means users can acquire knowledge of cocktail mixing by using "Bar Dude" in its described form. Additionally an examination mode is implemented. One would have to extend the system with RFID readers and suitable RFID labels on the ingredients to locate them. So the system could determine which ingredient was taken from the shelves in which step. In the examination mode first a cocktail is selected in known manner, but all LEDs are turend off. A bartender apprentice is asked to mix a cocktail without visual assist from the system. If he or she selects the right ingredient in the very step the ingredient is lighted green, red otherwise. In this setting "Bar Dude" could be more than just an assistance in cocktail mixing, namely a teacher in cocktail mixing in a classical learning by doing manner.
+
+
+
 %This paragraph will end the body of this sample document.
 %Remember that you might still have Acknowledgments or
 %Appendices; brief samples of these
