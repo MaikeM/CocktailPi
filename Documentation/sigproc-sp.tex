@@ -35,13 +35,15 @@ In this section we describe the thought process from the rough idea of a interac
 With the enormous amount of different cocktails it is unfeasible for non-bartenders to know how to mix every cocktail properly. "Bar Dude" addresses this problem by guiding people through the single steps of mixing their favourite cocktails. In a first step users are able to choose a cocktail from a proper interface. In a second step the user is advised to perform different action of the mixing procedure by illuminating the ingredients of the cocktail or displaying various light animations.
 \subsection{Design}
 
+In a first step we planed the shape of the bar using Adobe Inventor as shown in figure \ref{fig:bar_inventor}. One of our goals was to provide as many cocktails as possible with least ingredients. Regarding our calculations twelve ingredients is the best trade-off and gave us circa 50 different cocktails. This is why we designed it with two plexiglass shelves each with room for six bottles.
+
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
 \includegraphics[width=0.5\linewidth]{pictures/bar_inventor.png}}
 \captionof{figure}{Sketch of the bar}\label{fig:bar_inventor}%      only if needed  
 \end{minipage}
 
-In a first step we planed the shape of the bar using Adobe Inventor as shown in figure \ref{fig:bar_inventor}. One of our goals was to provide as many cocktails as possible with least ingredients. Regarding our calculations twelve ingredients is the best trade-off and gave us circa 50 different cocktails. This is why we designed it with two plexiglass shelves each with room for six bottles. Under the lowermost shelf we planed to place the cocktail glasses, the ice bucket and the cocktail shaker. LED strips should be used to illuminate the ingredients and should be arranged properly behind the plexiglass shelves. This should allow the independent illumination of each bottle. In the bottom plate of the bar, which consists of two plates with a cavity between them, a weight measuring module should be integrated so that the system is able to measure the actual amount of liquid that is already filled in the glass. To give the user visual feedback about how much liquid has to be filled in, LED strips are also placed under the weight measuring module. Furthermore the cavity of the bottom plate makes it possible to stow all electronics inside the bar so that the user does not see any wiring unless the raspberry pi surface. On this surface we want to give little instructions for each step in the mixing process of the selected cocktail.
+Under the lowermost shelf we planed to place the cocktail glasses, the ice bucket and the cocktail shaker. LED strips should be used to illuminate the ingredients and should be arranged properly behind the plexiglass shelves. This should allow the independent illumination of each bottle. In the bottom plate of the bar, which consists of two plates with a cavity between them, a weight measuring module should be integrated so that the system is able to measure the actual amount of liquid that is already filled in the glass. To give the user visual feedback about how much liquid has to be filled in, LED strips are also placed under the weight measuring module. Furthermore the cavity of the bottom plate makes it possible to stow all electronics inside the bar so that the user does not see any wiring unless the raspberry pi surface. On this surface we want to give little instructions for each step in the mixing process of the selected cocktail.
 
 Our shopping list looks as follows:
 \begin{itemize}
@@ -260,7 +262,7 @@ In our first field tests "Bar Dude" performed quite good. At a small to medium p
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
-   \includegraphics[width=0.5\linewidth, angle =270]{pictures/bar.jpg}}
+   \includegraphics[width=0.8\linewidth, angle =270]{pictures/bar.jpg}}
 \captionof{figure}{Finished bar}\label{fig:bar}%      only if needed  
 \end{minipage}
 
