@@ -158,29 +158,15 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 
 \section{Software Construction}
 \subsection{Raspberry Pi and Arduino}
-We developped a simple numbers based communication protocol between the Raspberry Pi and the Arduino. After starting the Arduino it waits for a message consisting of 9 characters. If the size is incorrect it will respond with \textit{ERRROR} to the Raspberry. If the message has the correct length it will first send back the received message for checking by the arduino and then execute the command that was encoded in the meassage. The first 3 charcaters denode the mode that will be chosen, by converting the charcters one by one to a number until a non numeric character appears. In the following we denode non numeric charcters with a \texttt{.} Possible commands are:
+We use a Raspberry Pi 2 Model B. We installed raspain as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar.
 
-\begin{itemize}
-\item \texttt{0.. ... ...} switches all lights off.
-\item \texttt{1.. ... ...} enables the so called \textit{partz mode} until an other command arrives
-\item \texttt{2.. ppp www} enables the \textit{whole weight meassuring mode}, where postion $ p $ will be illuminated until the scale has the weight $w$ grams and then sends \textit{READY} to the Raspberry Pi. \textit{This was used for debugging purposes only.}
-\item \texttt{3.. ppp www} enables the \textit{added weight measuring mode}, where position $ p $ will be illuminated until  $w$ grams have been added to the weight that is measured when issuing the command and then sends \textit{READY} to the Raspberry Pi.
-\item \texttt{4.. ... ...} returns the current weight in grams over the serial connection. \textit{This was used for debugging purposes only.}
-\item \texttt{5.. ... ...} illuminates the glasses until one is placed on the scale and then sends \textit{READY} to the Raspberry Pi.
-\item \texttt{6.. ... ...} illuminates the shaker until it is placed on the scale and then sends \textit{READY} to the Raspberry Pi.
-\item \texttt{7.. ... ...} illuminates the glasses and waits until one is taken, placed on the scale and filled with the content of the shaker and then sends \textit{READY} to the Raspberry Pi.
-\item \texttt{8.. ttt ttt} illuminates the bar  for $t$ milliseconds in a way that inspires the user to shake the shaker, waits until the shaker is placed on the scale again and then sends \textit{READY} to the Raspberry Pi. 
-\item \texttt{9.. ttt ttt} illuminates the bar for $t$ milliseconds in a way that inspires the user to stir his drink with a spoon and then sends \textit{READY} to the Raspberry Pi.
-\item \texttt{11. ttt ttt} waits for $t$ milliseconds that the user touches the scale. I fthe user touched the scale the Arduino sends {TOUCHED} to the Raspberry Pi, else it will send .\textit{NO?INPUT}
-\item \texttt{12. ... ...} measures the current weight and will display the \textit{party mode} until the weight from the scale is removed.
-
-\end{itemize}
-
-Any other command number will trigger the \textit{error mode}, which causes the whole bar to blink in red.
-
-
+The Arduino is an Arduino Uno rev3. It's a microcontroller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
+ 
 
 \subsection{Webserver}\label{sec:webserver}
+We use \textit{Apache} as web server that will serve the static content of the page, scripts and images. Via \textit{mod\_wsgi} Apache connects to Django. mod\_wsgi is an Apache module that can run Python apllication which supports Python WSGI (Web Server Gateway Interface).
+
+As Web Framework we use \textit{Django}. Django is Python based and uses a model/view/presenter schema. Django will receive the requested URL from Apache, then it will aggregate all information and data that are needed for the request and pass them to a HTML template, where the data is inserted and the final HTML is created, which Apache will serve to the user.
 
 \subsection{Database}
 We used internal Django interface to build the database. For development, we used SQLite3 and later on we switched to MySQL because SQLite3 cannot handle multiple accesses to the database. Because we use Django it is very easy to switch. All tables are saved as models and we only need to create the internal database. Django is also able to import the data from SQLite3 into MySQL. \\
@@ -198,10 +184,32 @@ While the server is running we can access '127.0.0.1/admin/' to enter entries in
 \end{figure}
 Django can handle all kinds of requests so that we do not need the normal SQL statements to ask for entries.
 
-\subsection{Communication}
+\subsection{Communication script}
 To communicate between the Arduino and the Raspberry Pi we use a python script, which is started when the Raspberry Pi boots. It connects to the database and to the Arduino. We used a sym link to have a fixed name to connect to the Arduino. It also opens the browser. \\
 The script runs as long as the Raspberry Pi is not shut down. It waits for input from the database in form of a new cocktail order which is not done yet. In case we are in step 0, it sends a beginning message to the Arduino which waits for the first touch of the weight measuring module. Otherwise it select the first step of the current cocktail from the database and translate the step into a command which the Arduino can understand. The command consists always of nine characters and the first three encrypt the action. The next three characters can be empty or encrypt the ingredient. The last three characters can also be empty or encrypt the amount of an ingredient. If we need some information about time for mixing, shaking or filling the content of the shaker into a glass, we send it in the last six characters. \\
 The Arduino always send an answer which can either be the message it received, 'READY' if an action has finished, 'TOUCHED' if someone touched the weight measuring module to start the process, 'NO\_INPUT' if no one touched the weight measuring module to start the process or 'ERROR' if the message lost some content. In case of an 'ERROR' message the message is sent again. In case of an 'NO\_INPUT' message the current order is deleted in the database.
+
+\subsection{Communication protocol}
+We developped a simple numbers based communication protocol between the Raspberry Pi and the Arduino. After starting the Arduino it waits for a message consisting of 9 characters. If the size is incorrect it will respond with \textit{ERRROR} to the Raspberry. If the message has the correct length it will first send back the received message for checking by the arduino and then execute the command that was encoded in the meassage. The first 3 charcaters denode the mode that will be chosen, by converting the charcters one by one to a number until a non numeric character appears. In the following we denode non numeric charcters with a \texttt{.} Possible commands are:
+
+\begin{itemize}
+\item \texttt{0.. ... ...} switches all lights off.
+\item \texttt{1.. ... ...} enables the so called \textit{party mode} until an other command arrives
+\item \texttt{2.. ppp www} enables the \textit{whole weight measuring mode}, where position $ p $ will be illuminated until the scale has the weight $w$ grams and then sends \textit{READY} to the Raspberry Pi. \textit{This was used for debugging purposes only.}
+\item \texttt{3.. ppp www} enables the \textit{added weight measuring mode}, where position $ p $ will be illuminated until  $w$ grams have been added to the weight that is measured when issuing the command and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{4.. ... ...} returns the current weight in grams over the serial connection. \textit{This was used for debugging purposes only.}
+\item \texttt{5.. ... ...} illuminates the glasses until one is placed on the scale and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{6.. ... ...} illuminates the shaker until it is placed on the scale and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{7.. ... ...} illuminates the glasses and waits until one is taken, placed on the scale and filled with the content of the shaker and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{8.. ttt ttt} illuminates the bar  for $t$ milliseconds in a way that inspires the user to shake the shaker, waits until the shaker is placed on the scale again and then sends \textit{READY} to the Raspberry Pi. 
+\item \texttt{9.. ttt ttt} illuminates the bar for $t$ milliseconds in a way that inspires the user to stir his drink with a spoon and then sends \textit{READY} to the Raspberry Pi.
+\item \texttt{11. ttt ttt} waits for $t$ milliseconds that the user touches the scale. If the user touched the scale the Arduino sends {TOUCHED} to the Raspberry Pi, else it will send \textit{NO\_INPUT}.
+\item \texttt{12. ... ...} measures the current weight and will display the \textit{party mode} until the weight from the scale is removed.
+
+\end{itemize}
+
+Any other command number will trigger the \textit{error mode}, which causes the whole bar to blink in red.
+
 \section{User Guide}
 \subsection{Start the System}
 To start the system you just need to connect the bar to the power supply system. After that the Raspberry Pi boots and when the 'Bar Dude' website is displayed, you can start ordering your cocktails. \\
