@@ -27,12 +27,12 @@ Tobias Kiefer\\
 
 \section{Introduction}
 With the upcoming LED technology and its numerous advantages, new possibilities especially for the maker scene emerged. Due to their low costs LEDs are affordable for nearly all DIY projects. Their low energy consumption and low operation voltage make them easily accessible also for non electronic experts with micro controller boards like the Arduino.\\
-In the seminar "Affective Lighting" the participants are encouraged to build their own project by combining interactive LED lighting and affective computing to create environmental responsive lighting experiences for future smart environments. The goal is the design and development of a system or devices that can recognize, interpret, and process human affects to adapt the lighting environment accordingly. The whole seminar is organized as an hackathon in teams of usually four person. This document guides the reader throughout the creation process of "Bar Dude" an interactive bar. "Bar Dude" is a system that uses different light signals to lead a user through the mixing procedure of the selected cocktail.
+In the seminar ``Affective Lighting" the participants are encouraged to build their own project by combining interactive LED lighting and affective computing to create environmental responsive lighting experiences for future smart environments. The goal is the design and development of a system or devices that can recognize, interpret, and process human affects to adapt the lighting environment accordingly. The whole seminar is organized as an hackathon in teams of usually four person. This document guides the reader throughout the creation process of ``Bar Dude" an interactive bar. ``Bar Dude" is a system that uses different light signals to lead a user through the mixing procedure of the selected cocktail.
 
 \section{Concept}
-In this section we describe the thought process from the rough idea of a interactive bar using LED technology over our design phase till a concrete plan of "Bar Dude" an interactive bar.
+In this section we describe the thought process from the rough idea of a interactive bar using LED technology over our design phase till a concrete plan of ``Bar Dude" an interactive bar.
 \subsection{Idea}
-With the enormous amount of different cocktails it is unfeasible for non-bartenders to know how to mix every cocktail properly. "Bar Dude" addresses this problem by guiding people through the single steps of mixing their favourite cocktails. In a first step users are able to choose a cocktail from a proper interface. In a second step the user is advised to perform different action of the mixing procedure by illuminating the ingredients of the cocktail or displaying various light animations.
+With the enormous amount of different cocktails it is unfeasible for non-bartenders to know how to mix every cocktail properly. ``Bar Dude" addresses this problem by guiding people through the single steps of mixing their favorite cocktails. In a first step users are able to choose a cocktail from a proper interface. In a second step the user is advised to perform different action of the mixing procedure by illuminating the ingredients of the cocktail or displaying various light animations.
 \subsection{Design}
 
 In a first step we planed the shape of the bar using Adobe Inventor as shown in figure \ref{fig:bar_inventor}. One of our goals was to provide as many cocktails as possible with least ingredients. Regarding our calculations twelve ingredients is the best trade-off and gave us circa 50 different cocktails. This is why we designed it with two plexiglass shelves each with room for six bottles. Under the lowermost shelf we planed to place the cocktail glasses, the ice bucket and the cocktail shaker. LED strips should be used to illuminate the ingredients and should be arranged properly behind the plexiglass shelves. 
@@ -70,7 +70,7 @@ Our shopping list looks as follows:
 In the first technical sketch we used a Raspberry Pi spanning a WiFi network and running a web server providing the user interface of the bar. This Raspberry Pi is connected via a serial connection over a USB cable to a Arduino Uno. To this micro controller the LED strips and the weight measuring module are connected.
 
 \section{Hardware Construction}
-In this section we explain the hardware construction process. In the first part a detailed description of the woodwork is given. After that the design and realisation of the plexiglass shelves is stated.
+In this section we explain the hardware construction process. In the first part a detailed description of the woodwork is given. After that the design and realization of the plexiglass shelves is stated.
 
 \subsection{Woodwork}
 After planning the rack and the shelves of the bar, we calculated the amount of wood we would need to build it. In a next step we had to cut the wood we bought into the right pieces.
@@ -130,7 +130,7 @@ After polishing and cleaning the rack with compressed air, we were able to prime
 
 
 \subsection{Plexiglass Shelves}
-The initial design planed that the two shelves only consisted of two full pelxiglass plates.
+The initial design planed that the two shelves only consisted of two full plexiglass plates.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -161,7 +161,7 @@ Finally we needed to connect all electronic parts together. The Raspberry Pi and
   \label{fig:fritzing}
 \end{minipage}
 
-All cables are equipped with plugs for easier assembling. For the LED stripes they were neccesary as the stripes doesn't fit through the drill holes. The cables from the stripes and the weighting module are all plugged into a self-soldered circuit board, which itself connects to the Arduino with only 3 plugs. 
+All cables are equipped with plugs for easier assembling. For the LED stripes they were necessary as the stripes doesn't fit through the drill holes. The cables from the stripes and the weighting module are all plugged into a self-soldered circuit board, which itself connects to the Arduino with only 3 plugs. 
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -181,12 +181,19 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 In this section the used electronic parts are described. Furthermore a illustration of the used software parts like the web server, user interface, database and the communication between the raspberry pi and arduino is given.
 
 \subsection{Raspberry Pi and Arduino}
-We use a Raspberry Pi 2 Model B. We installed raspain as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar.
+We use a Raspberry Pi 2 Model B. We installed raspian as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar.
 
 The Arduino is an Arduino Uno rev3. It's a micro controller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
+
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+   \includegraphics[width=0.5\linewidth]{pictures/raspberry_terminal.jpg}
+   \includegraphics[width=0.5\linewidth]{pictures/arduino_mit_kabel2.jpg}}
+\captionof{figure}{Left: Raspberry Pi with touch screen. Right: Arduino}\label{fig:rasp_arduino}%      only if needed  
+\end{minipage}
  
 \subsection{User Interface}
-The user interface that is implemented for the system is designed as a web page. We based our interface on the free Bootstrap admin template "Metro". The interface provides the ability to view and filter all possible cocktails that can be mixed using "Bar Dude". Additionally information about the cocktails are displayed: cocktails are classified into four groups 'virgin', 'softy', 'pimp' and 'dude' consecutively ordered on their amount of alcohol. Furthermore information about the availability is displayed. The availability status is computed out of the availability of the different ingredients. \\
+The user interface that is implemented for the system is designed as a web page. We based our interface on the free Bootstrap admin template ``Metro". The interface provides the ability to view and filter all possible cocktails that can be mixed using ``Bar Dude". Additionally information about the cocktails are displayed: cocktails are classified into four groups 'virgin', 'softy', 'pimp' and 'dude' consecutively ordered on their amount of alcohol. Furthermore information about the availability is displayed. The availability status is computed out of the availability of the different ingredients. \\
 A button in each cocktail box is displayed and can be clicked to order the corresponding cocktail.
 
 \subsection{Web server}\label{sec:web server}
@@ -218,7 +225,7 @@ The script runs as long as the Raspberry Pi is not shut down. It waits for input
 The Arduino always send an answer which can either be the message it received, 'READY' if an action has finished, 'TOUCHED' if someone touched the weight measuring module to start the process, 'NO\_INPUT' if no one touched the weight measuring module to start the process or 'ERROR' if the message lost some content. In case of an 'ERROR' message the message is sent again. In case of an 'NO\_INPUT' message the current order is deleted in the database.
 
 \subsection{Communication protocol}
-We developped a simple numbers based communication protocol between the Raspberry Pi and the Arduino. After starting the Arduino it waits for a message consisting of 9 characters. If the size is incorrect it will respond with \textit{ERRROR} to the Raspberry. If the message has the correct length it will first send back the received message for checking by the arduino and then execute the command that was encoded in the meassage. The first 3 charcaters denode the mode that will be chosen, by converting the charcters one by one to a number until a non numeric character appears. In the following we denode non numeric charcters with a \texttt{.} Possible commands are:
+We developed a simple numbers based communication protocol between the Raspberry Pi and the Arduino. After starting the Arduino it waits for a message consisting of 9 characters. If the size is incorrect it will respond with \textit{ERRROR} to the Raspberry. If the message has the correct length it will first send back the received message for checking by the Arduino and then execute the command that was encoded in the message. The first 3 characters denote the mode that will be chosen, by converting the characters one by one to a number until a non numeric character appears. In the following we denote non numeric characters with a \texttt{.} Possible commands are:
 
 \begin{itemize}
 \item \texttt{0.. ... ...} switches all lights off.
@@ -242,7 +249,7 @@ Any other command number will trigger the \textit{error mode}, which causes the 
 In this section a overview of how to use the system is given.
 \subsection{Start the System}
 To start the system you just need to connect the bar to the power supply system. After that the Raspberry Pi boots and when the 'Bar Dude' website is displayed, you can start ordering your cocktails. \\
-To initialize the system you have to enter the current amount of each ingredient. After connecting to 'CocktailPi' discribed in the next subsection go to '192.168.0.1/admin/' and log in with 'admin' and 'ubercocktail'. Then select 'Ingredients' and edit the amount. You also should do this when you replace a bottle.
+To initialize the system you have to enter the current amount of each ingredient. After connecting to 'CocktailPi' described in the next subsection go to '192.168.0.1/admin/' and log in with 'admin' and 'ubercocktail'. Then select 'Ingredients' and edit the amount. You also should do this when you replace a bottle.
  \subsection{Select a Cocktail}
 You have to connect to the Access Point 'CocktailPi' and log in with the password 'CocktailPi'. Then go to '192.168.0.1' in your browser. Now you can see the interface where you can choose your cocktail, which you can see in figure \ref{fig:select_cocktail}. For more information about the website read section \ref{sec:web server}. You choose your cocktail by clicking on the corresponding 'Do it dude!' button. You get a number to know which cocktail is your's.
 
@@ -265,9 +272,9 @@ Now you can follow the instructions of the display, as shown in figure \ref{fig:
 
 
 \section{Conclusions}
-We built a system called "Bar Dude" (figure \ref{fig:bar}) that combines interactive lighting elements with affective computing to guide users of the system throughout the mixing procedure of an arbitrary cocktail. Whereby we fulfilled the requirements of the seminar "Affective Lighting". \\
-"Bar Dude" allows a user to select a cocktail out of a selection of circa 50 different ones via a provided web application. The system assigns an ID to the user and asks him to go to the bar. There he or she can follow the self explaining advices given via light signals, such that a user with no prior knowledge of bartending can mix a cocktail. \\
-In our first field tests "Bar Dude" performed quite good. At a small to medium party or an event where an hired bartender is not affordable, but one nevertheless wants to serve cocktails to his guests "Bar Dude" is a good and keen alternative.
+We built a system called ``Bar Dude" (figure \ref{fig:bar}) that combines interactive lighting elements with affective computing to guide users of the system throughout the mixing procedure of an arbitrary cocktail. Whereby we fulfilled the requirements of the seminar ``Affective Lighting". \\
+``Bar Dude" allows a user to select a cocktail out of a selection of circa 50 different ones via a provided web application. The system assigns an ID to the user and asks him to go to the bar. There he or she can follow the self explaining advices given via light signals, such that a user with no prior knowledge of bartending can mix a cocktail. \\
+In our first field tests ``Bar Dude" performed quite good. At a small to medium party or an event where an hired bartender is not affordable, but one nevertheless wants to serve cocktails to his guests ``Bar Dude" is a good and keen alternative.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -276,7 +283,7 @@ In our first field tests "Bar Dude" performed quite good. At a small to medium p
 \end{minipage}
 
 \section{Future Work}
-Apart from our initial idea the system could be extended to a bartender school. That means users can acquire knowledge of cocktail mixing by using "Bar Dude" in its described form. Additionally an examination mode is implemented. One would have to extend the system with RFID readers and suitable RFID labels on the ingredients to locate them. So the system could determine which ingredient was taken from the shelves in which step. In the examination mode first a cocktail is selected in known manner, but all LEDs are turend off. A bartender apprentice is asked to mix a cocktail without visual assist from the system. If he or she selects the right ingredient in the very step the ingredient is lighted green, red otherwise. In this setting "Bar Dude" could be more than just an assistance in cocktail mixing, namely a teacher in cocktail mixing in a classical learning by doing manner.
+Apart from our initial idea the system could be extended to a bartender school. That means users can acquire knowledge of cocktail mixing by using ``Bar Dude" in its described form. Additionally an examination mode is implemented. One would have to extend the system with RFID readers and suitable RFID labels on the ingredients to locate them. So the system could determine which ingredient was taken from the shelves in which step. In the examination mode first a cocktail is selected in known manner, but all LEDs are turned off. A bartender apprentice is asked to mix a cocktail without visual assist from the system. If he or she selects the right ingredient in the very step the ingredient is lighted green, red otherwise. In this setting ``Bar Dude" could be more than just an assistance in cocktail mixing, namely a teacher in cocktail mixing in a classical learning by doing manner.
 
 
 
