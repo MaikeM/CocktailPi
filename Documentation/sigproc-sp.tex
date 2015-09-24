@@ -181,9 +181,9 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 In this section the used electronic parts are described. Furthermore a illustration of the used software parts like the web server, user interface, database and the communication between the raspberry pi and arduino is given.
 
 \subsection{Raspberry Pi and Arduino}
-We use a Raspberry Pi 2 Model B. We installed raspian as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar.
+We use a Raspberry Pi 2 Model B. We installed raspian as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar. The Raspberry Pi is connected to a touch screen display, which we use to display the current step (see Figure \ref{fig:rasp_arduino}, left).
 
-The Arduino is an Arduino Uno rev3. It's a micro controller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
+The Arduino is an Arduino Uno rev3 (Figure \ref{fig:rasp_arduino}, right). It's a micro controller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
