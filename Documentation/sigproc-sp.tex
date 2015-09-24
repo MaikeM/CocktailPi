@@ -205,13 +205,13 @@ As Web Framework we use \textit{Django}. Django is Python based and uses a model
 
 
 \subsection{Database}
-We used internal Django interface to build the database. For development, we used SQLite3 and later on we switched to MySQL because SQLite3 cannot handle multiple accesses to the database. Because we use Django it is very easy to switch. All tables are saved as models and we only need to create the internal database. Django is also able to import the data from SQLite3 into MySQL. \\
+We used internal Django interface to build the database. For development, we used SQLite3 and later on we switched to MySQL because SQLite3 cannot handle multiple accesses to the database. Since we use Django it is very easy to switch. All tables are saved as models and we only need to create the internal database. Django is also able to import the data from SQLite3 into MySQL. \\
 To create tables in Django, models are used. A model declares the column names, the corresponding types and constrains. Then Django need to migrate the database with the following commands:
 \begin{lstlisting}[language=bash]
  $ python manage.py makemigrations
  $ python manage.py migrate
 \end{lstlisting}
-While the server is running we can access '127.0.0.1/admin/' to enter entries into the created tables. We also could to this with normal SQL commands. Now we can select the table and add new entries (Figure \ref{fig:db_entry}). \\
+While the server is running we can access '127.0.0.1/admin/' to enter entries into the created tables. We also could to this with normal SQL commands. Now we can select the table and add new entries (figure \ref{fig:db_entry}). \\
 \begin{figure}[htbp] 
  \centering
     \includegraphics[width=0.8\linewidth]{pictures/db_insert_entry.png}
@@ -222,7 +222,7 @@ Django can handle all kinds of requests so that we do not need the normal SQL st
 
 \subsection{Communication script}
 To communicate between the Arduino and the Raspberry Pi we use a python script, which is started when the Raspberry Pi boots. It connects to the database and to the Arduino. We used a sym link to have a fixed name to connect to the Arduino. It also opens the browser. \\
-The script runs as long as the Raspberry Pi is not shut down. It waits for input from the database in form of a new cocktail order which is not done yet. In case we are in step 0, it sends a beginning message to the Arduino which waits for the first touch of the weight measuring module. Otherwise it select the first step of the current cocktail from the database and translate the step into a command which the Arduino can understand. The command consists always of nine characters and the first three encrypt the action. The next three characters can be empty or encrypt the ingredient. The last three characters can also be empty or encrypt the amount of an ingredient. If we need some information about time for mixing, shaking or filling the content of the shaker into a glass, we send it in the last six characters. \\
+The script runs as long as the Raspberry Pi is not shut down. It waits for input from the database in form of a new cocktail order which is not done yet. In case we are in step 0, it sends a beginning message to the Arduino which waits for the first touch of the weight measuring module. Otherwise it selects the first step of the current cocktail from the database and translates the step into a command which the Arduino can understand. The command consists always of nine characters and the first three encode the action. The next three characters can be empty or encode the ingredient. The last three characters can also be empty or encode the amount of an ingredient. If we need some information about time for mixing, shaking or filling the content of the shaker into a glass, we send it in the last six characters. \\
 The Arduino always send an answer which can either be the message it received, 'READY' if an action has finished, 'TOUCHED' if someone touched the weight measuring module to start the process, 'NO\_INPUT' if no one touched the weight measuring module to start the process or 'ERROR' if the message lost some content. In case of an 'ERROR' message the message is sent again. In case of an 'NO\_INPUT' message the current order is deleted in the database.
 
 \subsection{Communication protocol}
@@ -269,13 +269,13 @@ When your number is displayed on the display of the Raspberry Pi, you have 30 se
    \includegraphics[width=0.8\linewidth]{pictures/raspberry_mixing.png}}
 \captionof{figure}{The surface of the Raspberry Pi during the mixing of the cocktail\\}\label{fig:raspberry_mixing}%      only if needed  
 \end{minipage}
-Now you can follow the instructions of the display, as shown in figure \ref{fig:raspberry_mixing}. First you have to take a glass or a shaker depending on which is illuminated and put it on the weight measuring module. Then you add the illuminated ingredients. The weight measuring module shows you which amount if the ingredient is needed. It changes the color from red to green and the speed of the illumination slows down until you fill in enough. If you use a shaker you have to shake it when the bar goes wild. Then you have to take a glass and fill the content of the shaker into the glass. If you take a glass at first, you normally, not always, have to mix your cocktail. In this case the weight measuring module displays a circle. Take a spoon and mix until the next step is displayed. When your cocktail is finished, a party mode is displayed. 
+Now you can follow the instructions of the display, as shown in figure \ref{fig:raspberry_mixing}. First you have to take a glass or a shaker depending on which is illuminated and put it on the weight measuring module. Then you add the illuminated ingredients. The weight measuring module shows you which amount of the ingredient is needed. It changes the color from red to green and the speed of the illumination slows down until you fill in enough. If you use a shaker you have to shake it when the bar goes wild. Then you have to take a glass and fill the content of the shaker into the glass. If you take a glass at first, you normally, not always, have to mix your cocktail. In this case the weight measuring module displays a circle. Take a spoon and mix until the next step is displayed. When your cocktail is finished, a party mode is displayed. 
 
 
 \section{Conclusions}
 We built a system called ``Bar Dude" (figure \ref{fig:bar}) that combines interactive lighting elements with affective computing to guide users of the system throughout the mixing procedure of an arbitrary cocktail. Whereby we fulfilled the requirements of the seminar ``Affective Lighting". \\
 ``Bar Dude" allows a user to select a cocktail out of a selection of circa 50 different ones via a provided web application. The system assigns an ID to the user and asks him to go to the bar. There he or she can follow the self explaining advices given via light signals, such that a user with no prior knowledge of bartending can mix a cocktail. \\
-In our first field tests ``Bar Dude" performed quite good. At a small to medium party or an event where an hired bartender is not affordable, but one nevertheless wants to serve cocktails to his guests ``Bar Dude" is a good and keen alternative.
+In our first field tests ``Bar Dude" performed quite good. At a small to medium party or an event where an hired bartender is not affordable, but one nevertheless wants to serve cocktails to his guests, ``Bar Dude" is a good and keen alternative.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
