@@ -31,7 +31,30 @@
 
 /* Main Colors
 =================================================================== */
-
+.about{
+	width: 70%;
+	height: 65%;
+	display: none;
+	z-index: 100;
+	position: absolute;
+	left: 15%;
+	top: 15%;
+	background: white;
+	border-style: solid;
+	border-color: black;
+	border-width: 5px;  
+}
+.about_text{
+	text-align: center;
+}
+.about_button{
+	width: 25%;
+	float: left;
+	text-align: center;
+}
+#about_open{
+	padding-top: 10px;
+}
 .black,
 .black [class="box-header"],
 .black.box,

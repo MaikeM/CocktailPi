@@ -24,6 +24,7 @@ def index(request):
         alc_names = request.POST['alc']
         print('ABC: ' + str(cocktail) + ' ' + str(ingredient) + ' ' + str(alc_names))
         if (cocktail == "0" and ingredient == "0" and alc_names == "0"):
+            filteron = False
             print ('no selection')
         elif (cocktail != "0" and ingredient == "0" and alc_names == "0"):
             selected_steps = MixStep.objects.filter(cocktail_id=cocktail).order_by('ingredient__name')
@@ -42,129 +43,84 @@ def index(request):
                 selected.append(step.cocktail_id)
         elif (cocktail != "0" and ingredient != "0" and alc_names != "0"):
             if (alc_names == 1):   # Virgin
-                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(ingredient_id=ingredient).filter(cocktail_nonalcoholic = True).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(ingredient_id=ingredient).filter(cocktail_nonalcoholic = 1).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
             elif (alc_names == 2):   # Alcoholic
-                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(ingredient_id=ingredient).filter(cocktail_nonalcoholic = False).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(ingredient_id=ingredient).filter(cocktail_nonalcoholic = 0).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
-            # elif (alc_names == 2): # Softy
-            #     selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(ingredient_id=ingredient).filter(cocktail_id__alc > 0).filter(cocktail_id__alc < 12).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == 3): # Pimp
-            #     selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(ingredient_id=ingredient).filter(cocktail_id__alc > 11).filter(cocktail_id__alc < 32).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == 4): # Dude
-            #     selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(ingredient_id=ingredient).filter(cocktail_id__alc > 31).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
             else:
                 print ('Else 1')
         elif (cocktail != "0" and ingredient == "0" and alc_names != "0"):
             if (alc_names == "1"):   # Virgin
-                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(cocktail_id__nonalcoholic = True).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(cocktail_id__nonalcoholic = 1).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
             elif (alc_names == "2"):   # Alcoholic
-                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(cocktail_id__nonalcoholic = False).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(cocktail_id__nonalcoholic = 0).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
-            # elif (alc_names == "2"): # Softy
-            #     selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(cocktail_id__alc >= 1)#.filter(cocktail_id__alc <= 12).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == "3"): # Pimp
-            #     selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(cocktail_id__alc >= 13)#.filter(cocktail_id__alc <=32).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == "4"): # Dude
-            #     selected_steps = MixStep.objects.filter(cocktail_id=cocktail).filter(cocktail_id__alc >= 33).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
             else:
                 print ('Else 1b')
         elif (cocktail == "0" and ingredient != "0" and alc_names != "0"):
             if (alc_names == "1"):   # Virgin
-                selected_steps = MixStep.objects.filter(ingredient_id=ingredient).filter(cocktail_id__nonalcoholic = True).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(ingredient_id=ingredient).filter(cocktail_id__nonalcoholic = 1).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
             if (alc_names == "2"):   # Virgin
-                selected_steps = MixStep.objects.filter(ingredient_id=ingredient).filter(cocktail_id__nonalcoholic = False).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(ingredient_id=ingredient).filter(cocktail_id__nonalcoholic = 0).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
-            # elif (alc_names == "2"): # Softy
-            #     selected_steps = MixStep.objects.filter(ingredient_id=ingredient).filter(cocktail_id__alc > 0).filter(cocktail_id__alc < 12).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == "3"): # Pimp
-            #     selected_steps = MixStep.objects.filter(ingredient_id=ingredient).filter(cocktail_id__alc > 11).filter(cocktail_id__alc < 32).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == "4"): # Dude
-            #     selected_steps = MixStep.objects.filter(ingredient_id=ingredient).filter(cocktail_id__alc > 31).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
             else:
                 print ('Else 2')
         elif (cocktail == "0" and ingredient == "0" and alc_names != "0"):
             if (alc_names == "1"):   # Virgin
-                selected_steps = MixStep.objects.filter(cocktail_id__nonalcoholic = True).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(cocktail_id__nonalcoholic = 1).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
             elif (alc_names == "2"):   # Alcoholic
-                selected_steps = MixStep.objects.filter(cocktail_id__nonalcoholic = False).order_by('ingredient__name')
+                selected_steps = MixStep.objects.filter(cocktail_id__nonalcoholic = 0).order_by('ingredient__name')
                 print (selected_steps)
                 for step in selected_steps:
                     selected.append(step.cocktail_id)
-            # elif (alc_names == "2"): # Softy
-            #     selected_steps = MixStep.objects.filter(cocktail_id__alc > 0).filter(cocktail_id__alc < 12).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == "3"): # Pimp
-            #     selected_steps = MixStep.objects.filter(cocktail_id__alc > 11).filter(cocktail_id__alc < 32).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
-            # elif (alc_names == "4"): # Dude
-            #     selected_steps = MixStep.objects.filter(cocktail_id__alc > 31).order_by('ingredient__name')
-            #     print (selected_steps)
-            #     for step in selected_steps:
-            #         selected.append(step.cocktail_id)
             else:
                 print ('Else 3')
         else:
             print ("Else big")
     selected2 = set(selected)
     print(selected2)
+    chose = []
+    for cocktail in cocktails:
+        if (filteron == False or cocktail.id in selected2):
+            enough = True
+            selected_steps = MixStep.objects.filter(cocktail_id=cocktail).order_by('ingredient__name')
+            current_ingredient = []
+            for step in selected_steps:
+                for ingredient in ingredients:
+                    if (step.ingredient == ingredient):
+                        current_ingredient.append(ingredient)
+                        if (step.amount > ingredient.amount):
+                            enough = False
+            chosen = [cocktail.id, cocktail.name, cocktail.description, cocktail.nonalcoholic,cocktail.alc, current_ingredient, enough]
+            chose.append(chosen)                   
+
     context = RequestContext(request, {
         'cocktails': cocktails,
         'ingredients': ingredients,
         'steps': steps,
-        'selected': selected2,
-        'filteron': filteron,
+        'chose': chose,
         'box': 'box ' + random.choice(COLORS) + ' span12',
     })
     print ("selected: " + str(selected))
+    print ("chose: " + str(chose))
     return render(request, 'cocktaildb/cocktails.html', context)
 	
 def ingredient(request, ingredient_id):
@@ -233,3 +189,23 @@ def mix(request, cocktail_id):
         'order_id': order.id,
     })
     return render(request, 'cocktaildb/mix.html', context)
+
+
+def boot(request, mode_id):
+    print ("mode_id" + mode_id)
+    if mode_id == "0":
+        command = "/usr/bin/sudo /sbin/shutdown -r 10"
+        mode = "reboot"
+    elif mode_id == "1":
+        command = "/usr/bin/sudo /sbin/shutdown -h 10"
+        mode = "shutdown"
+    else:
+        return redirect('cocktaildb:index')
+    import subprocess
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    print output
+    context = RequestContext(request, {
+        'mode': mode,
+        })
+    return render (request, 'cocktaildb/boot.html', context)

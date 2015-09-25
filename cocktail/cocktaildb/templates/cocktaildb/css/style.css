@@ -31,7 +31,15 @@
 
 /* Main Colors
 =================================================================== */
-
+.about{
+	color: red;
+	with:220px;
+	/*visibility: hidden; */
+	z-index: 10;
+	position: relative;
+	left: 50px;
+	top: 50px;
+}
 .black,
 .black [class="box-header"],
 .black.box,
@@ -2972,3 +2980,5 @@ ul.messagesList li span.date {
 	}
     
 }
+
+

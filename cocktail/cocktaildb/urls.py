@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^ingredient/(?P<ingredient_id>[0-9]+)/', views.ingredient, name='ingredient'),
     url(r'^ingredients/', views.ingredients, name='ingredients'),
     url(r'^mix/(?P<cocktail_id>[0-9]+)/', views.mix, name='mix'),
+    url(r'^boot/(?P<mode_id>[0-9]+)/', views.boot, name='boot'),
 ]

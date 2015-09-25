@@ -53,15 +53,15 @@
 	</div>
 </div>
 
-{% for cocktail in cocktails %}
-{% if filteron == False or cocktail.id in selected %}
+{% for chosen in chose %}
+
 <div class="row-fluid">
     <div class="box {% cycle 'blue' 'yellow' 'pink' 'green' %} span12">
         <div class="box-header">
             <h2>
 				<i class="hand-top"></i>
 				<span class="break"></span>
-					{{ cocktail.name }}
+					{{ chosen.1 }} <!-- name -->
 			</h2>
 			<div class="box-icon">
                 <a class="btn-minimize" href="#"><i class="halflings-icon chevron-up"></i></a>
@@ -70,72 +70,57 @@
         <div class="box-content" style="display:none;">
             <div class="span2">
                 <a href="#">
-                    <img class="avatar" src="{% static 'cocktaildb/img/cocktails/' %}{{cocktail.id}}.jpg" alt="{{ cocktail }}">
+                    <img class="avatar" src="{% static 'cocktaildb/img/cocktails/' %}{{chosen.0}}.jpg" alt="{{ chosen.1 }}">
                 </a>
             </div>
             <div class="span10">
                 <p>
-                    <strong><font color="#111111">Description: </font></strong><font color="#5A5A5A">{{ cocktail.description }}</font>
+                    <strong><font color="#111111">Description: </font></strong><font color="#5A5A5A">{{ chosen.2}}</font>  <!-- description -->
                     <br>
                     <br>
                     <strong><font color="#111111">Ingredients: </font></strong><font color="#5A5A5A">
-                    {% for step in steps %}
-                        {% if cocktail == step.cocktail %}
-                            {% for ingredient in ingredients %}
-                                {% if step.ingredient == ingredient %}
-                                    <a href="{% url 'cocktaildb:ingredient' ingredient.id %}"> {{ingredient}} </a> 
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                    {% for ingredient in chosen.5 %}
+                        <a href="{% url 'cocktaildb:ingredient' ingredient.id %}"> {{ingredient}} </a> 
                     {% endfor %}
                     </font>
                     <br>
                     <br>
-					{% if cocktail.nonalcoholic %}
+					{% if chosen.3%} <!-- nonalcoholic -->
 						<strong><font color="#111111">Strength:</font></strong> <span class="label label-info">Virgin</span>
-					{% elif cocktail.alc < 12 %}
+					{% elif chosen.4 < 12 %} <!-- alc -->
 						<strong><font color="#111111">Strength:</font></strong> <span class="label label-success">Softy</span>
-					{% elif cocktail.alc < 32 %}
+					{% elif chosen.4 < 32 %}
 					  	<strong><font color="#111111">Strength:</font></strong> <span class="label label-warning">Pimp</span>
-					{% elif cocktail.alc < 90 %}
+					{% elif chosen.4 < 90 %}
 						<strong><font color="#111111">Strength:</font></strong> <span class="label label-important">Dude</span>
 					{% endif %}
 					<br>
                     <br>
-                    <strong><font color="#111111">Status:</font></strong>  </br>
-                    {% for step in steps %}
-                        {% if cocktail == step.cocktail %}
-                            {% for ingredient in ingredients %}
-                                {% if step.ingredient == ingredient %}
-                                    {% if ingredient.amount > step.amount %}
-                                        <span class="label label-success" style="padding:1px;">{{ingredient}} available
-                                        </span> </br>
-                                    {% else %}
-                                        <span class="label label-important">{{ingredient}} not available
-                                        </span> </br>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
+                    <strong><font color="#111111">Status:</font></strong>  
+                    {% if chosen.6 %}
+                        <span class="label label-success" style="padding:1px;">available </span>
+                    {% else %}
+                        <span class="label label-important">not available
+                        </span> 
+                    {% endif %}
                 </p>
                 <p>
-                    <br>
-                </p>
-                <p>
-                    <form action="{% url 'cocktaildb:mix' cocktail.id %}" method="post">
+                      <form action="{% url 'cocktaildb:mix' chosen.0 %}" method="post">
                         <div class="actions">
                             <input type="hidden" name="id" value="12423">
-							{% csrf_token %}
+                            {% csrf_token %}
                             <button class="btn btn-success" type="submit">Do it dude!</button>
                         </div>
                     </form>
+                    <br>
+                </p>
+                <p>
+                  
                 </p>
             </div>
             <div class="clearfix"></div>
         </div>
     </div>
 </div>
-{% endif %}
 {% endfor %}
 {% endblock %}
