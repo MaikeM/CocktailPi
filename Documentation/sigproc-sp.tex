@@ -27,7 +27,7 @@ Tobias Kiefer\\
 
 \section{Introduction}
 With the upcoming LED technology and its numerous advantages, new possibilities especially for the maker scene emerged. Due to their low costs LEDs are affordable for nearly all DIY projects. Their low energy consumption and low operation voltage make them easily accessible also for non electronic experts with micro controller boards like the Arduino.\\
-In the seminar ``Affective Lighting" the participants are encouraged to build their own project by combining interactive LED lighting and affective computing to create environmental responsive lighting experiences for future smart environments. The goal is the design and development of a system or devices that can recognize, interpret, and process human affects to adapt the lighting environment accordingly. The whole seminar is organized as an hackathon in teams of usually four person. This document guides the reader throughout the creation process of ``Bar Dude" an interactive bar. ``Bar Dude" is a system that uses different light signals to lead a user through the mixing procedure of the selected cocktail.
+In the seminar "Affective Lighting" the participants are encouraged to build their own project by combining interactive LED lighting and affective computing to create environmental responsive lighting experiences for future smart environments. The goal is the design and development of a system or devices that can recognize, interpret, and process human affects to adapt the lighting environment accordingly. The whole seminar is organized as an hackathon in teams of usually four person. This document guides the reader throughout the creation process of ``Bar Dude" an interactive bar. ``Bar Dude" is a system that uses different light signals to lead a user through the mixing procedure of the selected cocktail.
 
 \section{Concept}
 In this section we describe the thought process from the rough idea of a interactive bar using LED technology over our design phase till a concrete plan of ``Bar Dude" an interactive bar.
@@ -48,7 +48,7 @@ This should allow the independent illumination of each bottle. In the bottom pla
 Our shopping list looks as follows:
 \begin{itemize}
 \item Raspberry Pi 2 B
-\item Raspberry LCD Display
+\item Raspberry LCD display
 \item Power supply for Raspberry Pi
 \item SD-card for Raspberry Pi
 \item WLAN adapter for Raspberry Pi
@@ -67,7 +67,7 @@ Our shopping list looks as follows:
   \label{fig:technical}
 \end{figure}
 
-In the first technical sketch we used a Raspberry Pi spanning a WiFi network and running a web server providing the user interface of the bar. This Raspberry Pi is connected via a serial connection over a USB cable to a Arduino Uno. To this micro controller the LED strips and the weight measuring module are connected.
+In the first technical sketch (figure \ref{fig:technical}) we used a Raspberry Pi spanning a WiFi network and running a web server providing the user interface of the bar. This Raspberry Pi is connected via a serial connection over a USB cable to a Arduino Uno. To this micro controller the LED strips and the weight measuring module are connected.
 
 \section{Hardware Construction}
 In this section we explain the hardware construction process. In the first part a detailed description of the woodwork is given. After that the design and realization of the plexiglass shelves is stated.
@@ -99,7 +99,7 @@ When all pieces of the rack were fitted, we started to assemble the rack. For as
 \end{minipage}
 
 
-The finished framing of the rack is shown in figure \ref{fig:framing}. This picture also illustrates that we did the panelling between the two base plates with 4 mm poplar wood because this is thin and flexible that it can be bend.
+The finished framing of the rack is shown in figure \ref{fig:framing}. This picture also illustrates that we did the panelling between the two base plates with 4 mm poplar wood because this is thin and flexible so that it can be bend.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -112,7 +112,7 @@ For deriving a smooth surface of the rack, we filled all screw wholes with filli
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
-  \includegraphics[width=0.5\linewidth]{pictures/polishing.jpg}}
+  \includegraphics[width=0.45\linewidth]{pictures/polishing.jpg}}
 \captionof{figure}{Polishing the rack}\label{fig:polishing}%      only if needed  
 \end{minipage}
 
@@ -147,11 +147,12 @@ At the beginning of the design process we tested this approach and noticed that 
 \end{minipage}
 
 
-In the new design the plexiglass plates we cut into smaller pieces and put little pieces of wood between them. Furthermore we put a plate of wood under each shelve. This prevented the scattering of the light.\\
-Figure \ref{fig:illuminated_shelves} shows who one bottle in bar can be lighted with the new design.
+In the new design the plexiglass plates were cut into smaller pieces and we put little pieces of wood between them. Furthermore we put a plate of wood under each shelve. This prevented the scattering of the light.\\
+Figure \ref{fig:illuminated_shelves} shows the painted bar with the illumination of the shelves.
 
 \subsection{Soldering and Wiring}
-Finally we needed to connect all electronic parts together. The Raspberry Pi and the Arduino Uno are connected via an standard USB cable. Both have an individual 5 Volt power adapter with 1.2 Ampere for both devices. We have 5 LED stripes: One for both shelves, one for the glasses, one for the shaker and the ice, one for the glass panel above the scale and one for floor illumination. Each stripe needs three connections, one to ground, one to 5 Volt and one data connection to a digital pin the Arduino board. The scale is connected to a weighting module which is also connected to ground and 5 Volt and additional to 2 analog inputs on the Arduino board.
+Finally we needed to connect all electronic parts together. The Raspberry Pi and the Arduino Uno are connected via an standard USB cable. Both have an individual 5 Volt power adapter with 1.2 Ampere for both devices. We have 5 LED stripes: One for both shelves, one for the glasses, one for the shaker and the ice, one for the glass panel above the scale and one for floor illumination. Each stripe needs three connections, one to ground, one to 5 Volt and one data connection to a digital pin on the Arduino board. The scale is connected to a weighting module which is also connected to ground and 5 Volt and additional to 2 analog inputs on the Arduino board.
+Figure \ref{fig:fritzing} illustrates the wiring of the bar.
 
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
@@ -161,7 +162,7 @@ Finally we needed to connect all electronic parts together. The Raspberry Pi and
   \label{fig:fritzing}
 \end{minipage}
 
-All cables are equipped with plugs for easier assembling. For the LED stripes they were necessary as the stripes doesn't fit through the drill holes. The cables from the stripes and the weighting module are all plugged into a self-soldered circuit board, which itself connects to the Arduino with only 3 plugs. 
+All cables are equipped with plugs for easier assembling. For the LED stripes they were necessary as the stripes don't fit through the drill holes. The cables from the stripes and the weighting module are all plugged into a self-soldered circuit board (see figure \ref{fig:viewfrombelow} and \ref{fig:soldering}), which is connected to the Arduino with only 3 plugs. 
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -181,9 +182,9 @@ All cables are equipped with plugs for easier assembling. For the LED stripes th
 In this section the used electronic parts are described. Furthermore a illustration of the used software parts like the web server, user interface, database and the communication between the raspberry pi and arduino is given.
 
 \subsection{Raspberry Pi and Arduino}
-We use a Raspberry Pi 2 Model B. We installed raspian as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar. The Raspberry Pi is connected to a touch screen display, which we use to display the current step (see Figure \ref{fig:rasp_arduino}, left).
+We use a Raspberry Pi 2 Model B. We installed raspian as the OS and enabled ssh so we can remote connect. We connected a WiFi-USB-dongle and setup a DHCP server and a network called \textit{CocktailPi} so users can connect to the bar. The Raspberry Pi is connected to a touch screen display, which we use to display the current step (see figure \ref{fig:rasp_arduino}, left).
 
-The Arduino is an Arduino Uno rev3 (Figure \ref{fig:rasp_arduino}, right). It's a micro controller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
+The Arduino is an Arduino Uno rev3 (see figure \ref{fig:rasp_arduino}, right). It's a micro controller board with an 16Mhz processor and 32KB flash memory. It has 14 digital I/O and 6 analog input pins. The latter is also the reason why we need the Arduino, as the weighting module has 2 analog outputs and the Raspberry Pi has no analog inputs.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -193,7 +194,7 @@ The Arduino is an Arduino Uno rev3 (Figure \ref{fig:rasp_arduino}, right). It's 
 \end{minipage}
  
 \subsection{User Interface}
-The user interface that is implemented for the system is designed as a web page. We based our interface on the free Bootstrap admin template ``Metro". The interface provides the ability to view and filter all possible cocktails that can be mixed using ``Bar Dude". Additionally information about the cocktails are displayed: cocktails are classified into four groups 'virgin', 'softy', 'pimp' and 'dude' consecutively ordered on their amount of alcohol. Furthermore information about the availability is displayed. The availability status is computed out of the availability of the different ingredients. \\
+The user interface that is implemented for the system is designed as a web page. We based our interface on the free Bootstrap admin template "Metro". The interface provides the ability to view and filter all possible cocktails that can be mixed using "Bar Dude". Additionally information about the cocktails are displayed: cocktails are classified into four groups 'virgin', 'softy', 'pimp' and 'dude' consecutively ordered on their amount of alcohol. Furthermore information about the availability is displayed. The availability status is computed out of the availability of the different ingredients. \\
 A button in each cocktail box is displayed and can be clicked to order the corresponding cocktail.
 
 \subsection{Web server}\label{sec:web server}
@@ -204,13 +205,13 @@ As Web Framework we use \textit{Django}. Django is Python based and uses a model
 
 
 \subsection{Database}
-We used internal Django interface to build the database. For development, we used SQLite3 and later on we switched to MySQL because SQLite3 cannot handle multiple accesses to the database. Because we use Django it is very easy to switch. All tables are saved as models and we only need to create the internal database. Django is also able to import the data from SQLite3 into MySQL. \\
+We used internal Django interface to build the database. For development, we used SQLite3 and later on we switched to MySQL because SQLite3 cannot handle multiple accesses to the database. Since we use Django it is very easy to switch. All tables are saved as models and we only need to create the internal database. Django is also able to import the data from SQLite3 into MySQL. \\
 To create tables in Django, models are used. A model declares the column names, the corresponding types and constrains. Then Django need to migrate the database with the following commands:
 \begin{lstlisting}[language=bash]
  $ python manage.py makemigrations
  $ python manage.py migrate
 \end{lstlisting}
-While the server is running we can access '127.0.0.1/admin/' to enter entries into the created tables. We also could to this with normal SQL commands. Now we can select the table and add new entries (Figure \ref{fig:db_entry}). \\
+While the server is running we can access '127.0.0.1/admin/' to enter entries into the created tables. We also could to this with normal SQL commands. Now we can select the table and add new entries (figure \ref{fig:db_entry}). \\
 \begin{figure}[htbp] 
  \centering
     \includegraphics[width=0.8\linewidth]{pictures/db_insert_entry.png}
@@ -221,7 +222,7 @@ Django can handle all kinds of requests so that we do not need the normal SQL st
 
 \subsection{Communication script}
 To communicate between the Arduino and the Raspberry Pi we use a python script, which is started when the Raspberry Pi boots. It connects to the database and to the Arduino. We used a sym link to have a fixed name to connect to the Arduino. It also opens the browser. \\
-The script runs as long as the Raspberry Pi is not shut down. It waits for input from the database in form of a new cocktail order which is not done yet. In case we are in step 0, it sends a beginning message to the Arduino which waits for the first touch of the weight measuring module. Otherwise it select the first step of the current cocktail from the database and translate the step into a command which the Arduino can understand. The command consists always of nine characters and the first three encrypt the action. The next three characters can be empty or encrypt the ingredient. The last three characters can also be empty or encrypt the amount of an ingredient. If we need some information about time for mixing, shaking or filling the content of the shaker into a glass, we send it in the last six characters. \\
+The script runs as long as the Raspberry Pi is not shut down. It waits for input from the database in form of a new cocktail order which is not done yet. In case we are in step 0, it sends a beginning message to the Arduino which waits for the first touch of the weight measuring module. Otherwise it selects the first step of the current cocktail from the database and translates the step into a command which the Arduino can understand. The command consists always of nine characters and the first three encode the action. The next three characters can be empty or encode the ingredient. The last three characters can also be empty or encode the amount of an ingredient. If we need some information about time for mixing, shaking or filling the content of the shaker into a glass, we send it in the last six characters. \\
 The Arduino always send an answer which can either be the message it received, 'READY' if an action has finished, 'TOUCHED' if someone touched the weight measuring module to start the process, 'NO\_INPUT' if no one touched the weight measuring module to start the process or 'ERROR' if the message lost some content. In case of an 'ERROR' message the message is sent again. In case of an 'NO\_INPUT' message the current order is deleted in the database.
 
 \subsection{Communication protocol}
@@ -268,13 +269,13 @@ When your number is displayed on the display of the Raspberry Pi, you have 30 se
    \includegraphics[width=0.8\linewidth]{pictures/raspberry_mixing.png}}
 \captionof{figure}{The surface of the Raspberry Pi during the mixing of the cocktail\\}\label{fig:raspberry_mixing}%      only if needed  
 \end{minipage}
-Now you can follow the instructions of the display, as shown in figure \ref{fig:raspberry_mixing}. First you have to take a glass or a shaker depending on which is illuminated and put it on the weight measuring module. Then you add the illuminated ingredients. The weight measuring module shows you which amount if the ingredient is needed. It changes the color from red to green and the speed of the illumination slows down until you fill in enough. If you use a shaker you have to shake it when the bar goes wild. Then you have to take a glass and fill the content of the shaker into the glass. If you take a glass at first, you normally, not always, have to mix your cocktail. In this case the weight measuring module displays a circle. Take a spoon and mix until the next step is displayed. When your cocktail is finished, a party mode is displayed. 
+Now you can follow the instructions of the display, as shown in figure \ref{fig:raspberry_mixing}. First you have to take a glass or a shaker depending on which is illuminated and put it on the weight measuring module. Then you add the illuminated ingredients. The weight measuring module shows you which amount of the ingredient is needed. It changes the color from red to green and the speed of the illumination slows down until you fill in enough. If you use a shaker you have to shake it when the bar goes wild. Then you have to take a glass and fill the content of the shaker into the glass. If you take a glass at first, you normally, not always, have to mix your cocktail. In this case the weight measuring module displays a circle. Take a spoon and mix until the next step is displayed. When your cocktail is finished, a party mode is displayed. 
 
 
 \section{Conclusions}
 We built a system called ``Bar Dude" (figure \ref{fig:bar}) that combines interactive lighting elements with affective computing to guide users of the system throughout the mixing procedure of an arbitrary cocktail. Whereby we fulfilled the requirements of the seminar ``Affective Lighting". \\
 ``Bar Dude" allows a user to select a cocktail out of a selection of circa 50 different ones via a provided web application. The system assigns an ID to the user and asks him to go to the bar. There he or she can follow the self explaining advices given via light signals, such that a user with no prior knowledge of bartending can mix a cocktail. \\
-In our first field tests ``Bar Dude" performed quite good. At a small to medium party or an event where an hired bartender is not affordable, but one nevertheless wants to serve cocktails to his guests ``Bar Dude" is a good and keen alternative.
+In our first field tests ``Bar Dude" performed quite good. At a small to medium party or an event where an hired bartender is not affordable, but one nevertheless wants to serve cocktails to his guests, ``Bar Dude" is a good and keen alternative.
 
 \begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
